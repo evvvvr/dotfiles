@@ -1,0 +1,10 @@
+{
+    "translate_tabs_to_spaces": true,
+    "tab_size": 4,
+    "font_face": "consolas",
+    "font_options": "subpixel_antialias",
+    "font_size": 14,
+    "highlight_line": true,
+    "highlight_modified_tabs": true,
+    "rulers": [85]
+}
