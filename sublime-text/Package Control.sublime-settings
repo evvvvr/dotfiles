@@ -1,9 +1,9 @@
 {
     "bootstrapped": true,
     "installed_packages": [
+        "Babel",
         "BracketHighlighter",
         "Emmet",
-        "JavaScriptNext - ES6 Syntax",
         "Markdown Preview"
     ]
 }
