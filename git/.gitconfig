@@ -1,20 +1,14 @@
 [core]
- editor = 'c:/program files/sublime text 3/subl.exe' -w
-[merge]
- tool = kdiff3
+    editor = "subl -w"
 [diff]
- guitool = kdiff3
-[mergetool "kdiff3"]
- path = C:/Program Files/KDiff3/kdiff3.exe
-[difftool "kdiff3"]
- path = C:/Program Files/KDiff3/kdiff3.exe
+    tool = "kdiff3"
 
 [user]
-	name = Vladimir Galkin
-	email = vladgalkin@gmail.com
+    name = Vladimir Galkin
+    email = vladgalkin@gmail.com
 [push]
-	default = simple
+    default = simple
 [mergetool]
-	keepBackup = false
+    keepBackup = false
 [pull]
-	rebase = preserve
+    rebase = preserve
