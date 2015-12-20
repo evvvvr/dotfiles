@@ -1,14 +1,22 @@
 [core]
     editor = "subl -w"
-[diff]
-    tool = "kdiff3"
 
 [user]
     name = Vladimir Galkin
     email = vladgalkin@gmail.com
+
 [push]
     default = simple
-[mergetool]
-    keepBackup = false
+
 [pull]
     rebase = preserve
+
+[diff]
+    tool = "kdiff3"
+
+[difftool]
+    prompt = false
+
+[mergetool]
+    keepBackup = false
+    prompt = false
