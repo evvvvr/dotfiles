@@ -1,9 +1,14 @@
 {
     "bootstrapped": true,
-    "installed_packages": [
+    "installed_packages":
+    [
         "Babel",
         "BracketHighlighter",
         "Emmet",
-        "Markdown Preview"
+        "FindKeyConflicts",
+        "Markdown Preview",
+        "Package Control",
+        "React ES6 Snippets",
+        "SideBarEnhancements"
     ]
 }
