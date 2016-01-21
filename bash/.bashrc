@@ -157,3 +157,5 @@ fi
 unset env
 
 export EDITOR="subl"
+
+. /usr/share/autojump/autojump.sh
