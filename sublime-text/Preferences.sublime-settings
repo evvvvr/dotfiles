@@ -5,8 +5,8 @@
     "font_size": 18,
     "highlight_line": true,
     "highlight_modified_tabs": true,
-    "rulers": [ 85 ],
+    "rulers": [ 79 ],
     "tab_size": 4,
     "translate_tabs_to_spaces": true,
-    "word_wrap": "false"
+    "word_wrap": false
 }
