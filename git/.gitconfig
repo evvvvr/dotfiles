@@ -12,10 +12,10 @@
     rebase = preserve
 
 [diff]
-    tool = "kdiff3"
+    tool = "meld"
 
 [merge]
-    tool = "kdiff3"
+    tool = "meld"
 
 [difftool]
     prompt = false
