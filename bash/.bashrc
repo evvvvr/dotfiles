@@ -157,6 +157,8 @@ fi
 unset env
 
 export EDITOR="subl"
+
 export GOPATH="$HOME/projects/go-workspace"
+export PATH=$PATH:/usr/local/go/bin
 
 . /usr/share/autojump/autojump.sh
