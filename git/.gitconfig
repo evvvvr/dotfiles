@@ -2,7 +2,7 @@
     editor = "subl -w"
 
 [user]
-    name = Vladimir Galkin
+    name = Volodymyr Galkin
     email = vladgalkin@gmail.com
 
 [push]
