@@ -5,6 +5,9 @@
     name = Volodymyr Galkin
     email = vladgalkin@gmail.com
 
+[credential]
+    helper=osxkeychain
+
 [push]
     default = simple
 

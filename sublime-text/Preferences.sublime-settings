@@ -1,13 +1,18 @@
 {
 	"disable_formatted_linebreak": true,
-	"font_face": "inconsolata",
+	"font_face": "Monaco",
 	"font_options": "subpixel_antialias",
-	"font_size": 18,
+	"font_size": 22,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
 		"Vintage"
+	],
+	"indent_guide_options":
+	[
+		"draw_normal",
+		"draw_active"
 	],
 	"rulers":
 	[
@@ -15,11 +20,5 @@
 	],
 	"tab_size": 4,
 	"translate_tabs_to_spaces": true,
-	"word_wrap": false,
-    "indent_guide_options":
-    [
-        "draw_normal",
-        "draw_active"
-    ],
-
+	"word_wrap": false
 }
