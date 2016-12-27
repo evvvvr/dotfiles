@@ -75,6 +75,9 @@ fi
 echo "Install docker"
 brew cask install docker
 
+echo "Install iTerm2"
+brew cask install iterm2
+
 echo "Upgrade software"
 brew upgrade
 
