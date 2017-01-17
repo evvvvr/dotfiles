@@ -1,17 +1,18 @@
 {
-    "bootstrapped": true,
-    "installed_packages":
-    [
-        "Alignment",
-        "Babel",
-        "Boxy Theme",
-        "BracketHighlighter",
-        "Emmet",
-        "FindKeyConflicts",
-        "LESS",
-        "Markdown Preview",
-        "Package Control",
-        "React ES6 Snippets",
-        "SideBarEnhancements"
-    ]
+	"bootstrapped": true,
+	"installed_packages":
+	[
+		"Alignment",
+		"Babel",
+		"Boxy Theme",
+		"BracketHighlighter",
+		"Emmet",
+		"FindKeyConflicts",
+		"LESS",
+		"Markdown Preview",
+		"Package Control",
+		"React ES6 Snippets",
+		"SideBarEnhancements",
+		"Sublime Tutor"
+	]
 }
