@@ -47,10 +47,12 @@
 	<string>359 201 561 77 0 0 1280 777 </string>
 	<key>NSWindow Frame ProfilesPanel</key>
 	<string>291 394 735 382 0 0 1280 777 </string>
+	<key>NSWindow Frame SUUpdateAlert</key>
+	<string>330 289 620 392 0 0 1280 777 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>289 233 796 473 0 0 1280 777 </string>
+	<string>289 140 796 473 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>327 102 825 577 0 0 1280 777 </string>
+	<string>95 148 970 615 0 0 1280 777 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -1217,7 +1219,7 @@
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
 			<key>Transparency</key>
-			<real>0.23712786612426037</real>
+			<real>0.0</real>
 			<key>Unlimited Scrollback</key>
 			<false/>
 			<key>Use Bold Font</key>
@@ -1290,12 +1292,16 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-11-19T18:18:33Z</date>
+	<date>2017-01-18T14:14:25Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
+	<key>findIgnoreCase_iTerm</key>
+	<true/>
+	<key>findRegex_iTerm</key>
+	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.12</string>
+	<string>3.0.13</string>
 </dict>
 </plist>
