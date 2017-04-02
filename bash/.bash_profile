@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 export GITAWAREPROMPT=~/.git-prompt
 . "${GITAWAREPROMPT}/main.sh"
 
