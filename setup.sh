@@ -64,6 +64,7 @@ function install {
 
   echo "Install Sublime Text"
   brew cask install sublime-text
+  ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" /usr/local/bin/subl
 
   echo "Install meld"
   brew cask install meld
@@ -110,6 +111,14 @@ function install {
   . ${HOME}/.bash_profile
 
   update
+
+  echo "Install zsh"
+  brew install zsh
+  sudo bash -c "echo '/usr/local/bin/zsh' >> /etc/shells"
+  chsh -s /usr/local/bin/zsh
+
+  rm ~/.zshrc
+  ln -sf ${HOME}/dotfiles/zsh/.zshrc ${HOME}/.zshrc
 }
 
 cmd=$1
