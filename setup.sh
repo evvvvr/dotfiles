@@ -117,8 +117,12 @@ function install {
   sudo bash -c "echo '/usr/local/bin/zsh' >> /etc/shells"
   chsh -s /usr/local/bin/zsh
 
-  rm ~/.zshrc
+  rm ${HOME}/.zshrc
   ln -sf ${HOME}/dotfiles/zsh/.zshrc ${HOME}/.zshrc
+
+  git clone git://github.com/zsh-users/zsh-syntax-highlighting.git "${HOME}/.oh-my-zsh"
+
+  brew install z
 }
 
 cmd=$1
