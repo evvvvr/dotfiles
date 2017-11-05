@@ -49,6 +49,9 @@ function install {
   brew install rsync
   brew install bash-completion
 
+  echo "Install PostgreSQL"
+  brew install postgres
+
   echo "Install Python"
   brew install python
 
