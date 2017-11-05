@@ -26,6 +26,7 @@ function install {
   echo "Install git"
   brew install git
   brew install git-flow
+  ln -sf ${HOME}/dotfiles/git/git-clean-stale-local-branches /usr/local/bin
 
   echo "Install utils"
   brew untap homebrew/dupes

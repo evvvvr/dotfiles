@@ -14,6 +14,9 @@
 [pull]
     rebase = preserve
 
+[fetch]    
+    prune  = true
+
 [diff]
     tool = "meld"
 
@@ -26,3 +29,6 @@
 [mergetool]
     keepBackup = false
     prompt = false
+
+[alias]
+    clean-stale-local-branches = !git-clean-stale-local-branches
