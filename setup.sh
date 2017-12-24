@@ -49,6 +49,7 @@ function install {
   brew install htop
   brew install rsync
   brew install bash-completion
+  brew install tmux
 
   echo "Install PostgreSQL"
   brew install postgres

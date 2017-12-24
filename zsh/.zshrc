@@ -31,3 +31,10 @@ export NVM_DIR="$HOME/.nvm"
 
 docker-machine start >/dev/null 2>&1
 eval $(docker-machine env default); 
+
+if [[ -z ${TMUX} ]]
+then
+  echo 'tmux is not running'
+  exec tmux
+fi
+#tmux
