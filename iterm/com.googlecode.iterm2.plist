@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AlternateMouseScroll</key>
+	<true/>
 	<key>AppleAntiAliasingThreshold</key>
 	<integer>1</integer>
 	<key>AppleScrollAnimationEnabled</key>
@@ -184,14 +186,18 @@
 	<string>359 201 561 77 0 0 1280 777 </string>
 	<key>NSWindow Frame ProfilesPanel</key>
 	<string>291 394 735 382 0 0 1280 777 </string>
+	<key>NSWindow Frame SUStatusFrame</key>
+	<string>386 241 400 129 0 0 1280 777 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>330 289 620 392 0 0 1280 777 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 139 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>173 149 918 512 0 0 1280 777 </string>
+	<string>173 188 796 473 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>277 156 865 522 0 0 1280 777 </string>
+	<string>185 215 865 522 0 0 1280 777 </string>
+	<key>NSWindow Frame iTerm Window 1</key>
+	<string>310 87 865 522 0 0 1280 777 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -1948,10 +1954,20 @@
 	<true/>
 	<key>NoSyncInstallationId</key>
 	<string>C6702CCB-23E3-4684-BAEB-F98AFEFA1530</string>
+	<key>NoSyncLastTipTime</key>
+	<real>533806477.282206</real>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
+	<true/>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
+	<integer>0</integer>
 	<key>NoSyncPermissionToShowTip</key>
 	<false/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>500992700.70435202</real>
+	<key>NoSyncTipsToNotShow</key>
+	<array>
+		<string>000</string>
+	</array>
 	<key>OpenArrangementAtStartup</key>
 	<true/>
 	<key>OpenNoWindowsAtStartup</key>
@@ -2006,7 +2022,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-11-02T11:51:49Z</date>
+	<date>2018-02-15T21:31:15Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Window Arrangements</key>
@@ -3431,6 +3447,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.1.4</string>
+	<string>3.1.5</string>
 </dict>
 </plist>
