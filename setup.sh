@@ -102,6 +102,10 @@ function install {
       chsh -s /usr/local/bin/bash
   fi
 
+  echo "Install fonts"
+  brew tap caskroom/fonts
+  brew cask install font-fira-code
+
   echo "Install config files"
   ln -sf ${HOME}/dotfiles/git/.gitconfig ${HOME} 
   export SUBL_SETTINGS_DIR="${HOME}/Library/Application Support/Sublime Text 3"

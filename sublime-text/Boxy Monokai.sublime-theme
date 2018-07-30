@@ -1,7 +1,7 @@
 [
   {
     "class": "sidebar_label",
-    "color": [0, 0, 0],
+    "color": [110, 110, 110],
     "font.bold": false,
     "font.size": 22
   },

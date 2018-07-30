@@ -1,20 +1,31 @@
 {
 	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
 	"installed_packages":
 	[
 		"Alignment",
 		"Babel",
 		"Boxy Theme",
 		"BracketHighlighter",
+		"Clickable URLs",
 		"EditorConfig",
 		"Emmet",
 		"FindKeyConflicts",
 		"Jade",
+		"JavaScript Completions",
 		"LESS",
-		"Markdown Preview",
+		"LockTab",
+		"MarkdownPreview",
 		"Package Control",
 		"React ES6 Snippets",
+		"Scheme",
+		"SCSS",
 		"SideBarEnhancements",
-		"Sublime Tutor"
+		"Sublime Tutor",
+		"SublimeREPL",
+		"TabsExtra",
+		"Terraform"
 	]
 }

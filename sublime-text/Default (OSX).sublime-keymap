@@ -1,0 +1,5 @@
+[
+  { "keys": ["super+shift+\\"], "command": "split_pane" },
+  { "keys": ["super+shift+f"], "command": "copy_path" },
+  { "keys": ["super+alt+r"], "command": "reveal_in_side_bar" }
+]
