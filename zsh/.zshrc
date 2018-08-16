@@ -21,7 +21,7 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /Users/voga/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 . /usr/local/etc/profile.d/z.sh
 

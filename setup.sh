@@ -91,9 +91,6 @@ function install {
       git clone https://github.com/jimeh/git-aware-prompt.git "$HOME/.git-prompt"  
   fi
 
-  echo "Install autojump"
-  brew install autojump
-
   echo "Install iTerm2"
   brew cask install iterm2
 
@@ -128,7 +125,9 @@ function install {
   rm ${HOME}/.zshrc
   ln -sf ${HOME}/dotfiles/zsh/.zshrc ${HOME}/.zshrc
 
-  git clone git://github.com/zsh-users/zsh-syntax-highlighting.git "${HOME}/.oh-my-zsh"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+  git clone git://github.com/zsh-users/zsh-syntax-highlighting.git "${HOME}/.zsh-syntax-highlighting"
 
   brew install z
 }
