@@ -2,8 +2,11 @@
     editor = "subl -w"
 
 [user]
-    name = Volodymyr Galkin
+    name = Volodymyr Halkin
     email = vladgalkin@gmail.com
+
+[includeIf "gitdir:~/issuu/"]
+    path = ~/issuu/.gitconfig
 
 [credential]
     helper=osxkeychain
