@@ -29,8 +29,6 @@ export NVM_DIR="$HOME/.nvm"
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-docker-machine start >/dev/null 2>&1
-eval $(docker-machine env default); 
 
 if [[ -z ${TMUX} ]]
 then
