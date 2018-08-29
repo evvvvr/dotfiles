@@ -22,7 +22,7 @@
 	[
 		80
 	],
-	"tab_size": 2,
+	"tab_size": 4,
 	"theme": "Boxy Monokai.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"word_wrap": false
