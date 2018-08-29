@@ -54,6 +54,9 @@ function install {
   brew install entr
   brew cask install ngrok
 
+  echo "Install MySQL shell"
+  brew install caskroom/cask/mysql-shell
+
   echo "Install PostgreSQL"
   brew install postgres
 
