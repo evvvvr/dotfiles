@@ -1,5 +1,5 @@
 {
-	"color_scheme": "Packages/Boxy Theme/schemes/Boxy Monokai.tmTheme",
+	"color_scheme": "Monokai Pro.sublime-color-scheme",
 	"disable_formatted_linebreak": true,
 	"font_face": "Fira Code",
 	"font_options":
@@ -11,6 +11,8 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
+		"Sublime Tutor",
+		"Type​Script",
 		"Vintage"
 	],
 	"indent_guide_options":
@@ -18,12 +20,15 @@
 		"draw_normal",
 		"draw_active"
 	],
+	"monokai_pro_file_icons_monochrome": true,
+	"monokai_pro_sidebar_font_size": 14,
+	"monokai_pro_ui_font_face": "Fira Code",
 	"rulers":
 	[
 		80
 	],
 	"tab_size": 4,
-	"theme": "Boxy Monokai.sublime-theme",
+	"theme": "Monokai Pro.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"word_wrap": false
 }

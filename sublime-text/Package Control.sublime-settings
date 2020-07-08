@@ -7,7 +7,7 @@
 	[
 		"Alignment",
 		"Babel",
-		"Boxy Theme",
+		"BBCode Syntax",
 		"BracketHighlighter",
 		"Clickable URLs",
 		"Dockerfile Syntax Highlighting",
@@ -21,6 +21,7 @@
 		"MarkdownPreview",
 		"Package Control",
 		"Protocol Buffer Syntax",
+		"Pug",
 		"React ES6 Snippets",
 		"Scheme",
 		"SCSS",
@@ -28,6 +29,8 @@
 		"Sublime Tutor",
 		"SublimeREPL",
 		"TabsExtra",
-		"Terraform"
+		"Terraform",
+		"Theme - Monokai Pro",
+		"TypeScript"
 	]
 }
