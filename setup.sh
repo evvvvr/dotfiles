@@ -51,10 +51,16 @@ function install {
   brew install bash-completion
   brew install tree
   brew install entr
-  brew cask install ngrok
 
-  echo "Install MySQL shell"
-  brew install caskroom/cask/mysql-shell
+  brew install --cask warp
+
+  # Developer tools
+  brew install --cask visual-studio-code
+  brew install --cask ngrok
+  brew install --cask dbeaver-community
+
+  echo "Install MySQL"
+  brew install mysql
 
   echo "Install PostgreSQL"
   brew install postgres
@@ -93,16 +99,13 @@ function install {
       git clone https://github.com/jimeh/git-aware-prompt.git "$HOME/.git-prompt"  
   fi
 
-  echo "Install iTerm2"
-  brew cask install iterm2
-
-  grep -q "/usr/local/bin/bash" "/etc/shells";
-  if [[ $? != 0 ]] ; then
-      echo "Install new bash"
-      brew install bash
-      sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
-      chsh -s /usr/local/bin/bash
-  fi
+  # grep -q "/usr/local/bin/bash" "/etc/shells";
+  # if [[ $? != 0 ]] ; then
+  #     echo "Install new bash"
+  #     brew install bash
+  #     sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
+  #     chsh -s /usr/local/bin/bash
+  # fi
 
   echo "Install fonts"
   brew tap caskroom/fonts
@@ -118,20 +121,6 @@ function install {
   . ${HOME}/.bash_profile
 
   update
-
-  echo "Install zsh"
-  brew install zsh
-  sudo bash -c "echo '/usr/local/bin/zsh' >> /etc/shells"
-  chsh -s /usr/local/bin/zsh
-
-  rm ${HOME}/.zshrc
-  ln -sf ${HOME}/dotfiles/zsh/.zshrc ${HOME}/.zshrc
-
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
-  git clone git://github.com/zsh-users/zsh-syntax-highlighting.git "${HOME}/.zsh-syntax-highlighting"
-
-  brew install z
 }
 
 cmd=$1
