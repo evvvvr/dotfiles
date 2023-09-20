@@ -49,7 +49,6 @@ function install {
   brew install htop
   brew install rsync
   brew install bash-completion
-  brew install tmux
   brew install tree
   brew install entr
   brew cask install ngrok

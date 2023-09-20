@@ -35,3 +35,5 @@
 
 [alias]
     clean-stale-local-branches = !git-clean-stale-local-branches
+[init]
+	defaultBranch = main
