@@ -120,6 +120,9 @@ function install {
   ln -sf ${HOME}/dotfiles/bash/.bash_profile ${HOME}
   . ${HOME}/.bash_profile
 
+  ln -sf ${HOME}/dotfiles/zsh/.zshrc ${HOME}
+  . ${HOME}/.zshrc
+
   update
 }
 
