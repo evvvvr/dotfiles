@@ -15,7 +15,7 @@ function install {
   command -v "brew" >/dev/null 2>&1
   if [[ $? != 0 ]] ; then
     echo "Install Homebrew"
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   else
     echo "Update Homebrew"
     brew update
@@ -23,8 +23,8 @@ function install {
 
   brew tap caskroom/cask
 
-  echo "Install git"
-  brew install git
+ # echo "Install git"
+#  brew install git
   brew install git-flow
   ln -sf ${HOME}/dotfiles/git/git-clean-stale-local-branches /usr/local/bin
 
