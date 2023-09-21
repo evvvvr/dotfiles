@@ -32,14 +32,14 @@ function install {
   brew untap homebrew/dupes
   brew tap homebrew/dupes
 
-  brew install coreutils --with-default-names
-  brew install binutils --with-default-names
-  brew install diffutils --with-default-names
-  brew install findutils --with-default-names
-  brew install gnu-which --with-default-names
-  brew install gnu-sed --with-default-names
-  brew install grep --with-default-names
-  brew install gnu-tar --with-default-names
+  brew install coreutils
+  brew install binutils
+  brew install diffutils
+  brew install findutils
+  brew install gnu-which
+  brew install gnu-sed
+  brew install grep
+  brew install gnu-tar
   brew install gzip
   brew install unzip
   brew install watch
@@ -67,49 +67,25 @@ function install {
 
   echo "Install Python"
   brew install python
+  brew install pyenv
 
   echo "Install Java"
   brew cask install java
 
   echo "Install docker"
-  brew cask install docker
+  brew install --cask docker
 
   echo "Install Sublime Text"
   brew cask install sublime-text
   ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" /usr/local/bin/subl
 
-  echo "Install meld"
-  brew cask install meld
-
-  # nvm (https://github.com/creationix/nvm#install-script) and node
-  NVM_DIR="$HOME/.nvm"
-  if [[ ! -d "$NVM_DIR" ]]; then
-    echo "Install nvm and node"
-    (
-      git clone https://github.com/creationix/nvm.git "$NVM_DIR"
-      cd "$NVM_DIR"
-      git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" origin`
-    ) &&
-    chmod +x "$NVM_DIR/nvm.sh" &&
-    . "$NVM_DIR/nvm.sh" && nvm install node && nvm use node && npm install -g yarn
-  fi
-
-  if [[ ! -d "$HOME/.git-prompt" ]]; then
-      echo "Install git-aware prompt"
-      git clone https://github.com/jimeh/git-aware-prompt.git "$HOME/.git-prompt"  
-  fi
-
-  # grep -q "/usr/local/bin/bash" "/etc/shells";
-  # if [[ $? != 0 ]] ; then
-  #     echo "Install new bash"
-  #     brew install bash
-  #     sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
-  #     chsh -s /usr/local/bin/bash
-  # fi
+  # nvm
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+  nvm install node
 
   echo "Install fonts"
-  brew tap caskroom/fonts
-  brew cask install font-fira-code
+  brew tap homebrew/cask-fonts
+  brew install font-fira-code
 
   echo "Install config files"
   ln -sf ${HOME}/dotfiles/git/.gitconfig ${HOME} 
