@@ -1,8 +1,6 @@
 export PATH=/opt/homebrew/bin:$PATH
 
-
 plugins=(git)
-
 
 export PROMPT='%n%f@%m%f %1~%f $(git_prompt_info)%# '
 
@@ -23,7 +21,6 @@ export NVM_DIR="$HOME/.nvm"
 
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
@@ -33,5 +30,3 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export AWS_DEFAULT_PROFILE=tissuu
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"

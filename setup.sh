@@ -20,72 +20,12 @@ function install {
     echo "Update Homebrew"
     brew update
   fi
+ 
+  brew bundle --file Brewfile
 
-  brew tap caskroom/cask
-
- # echo "Install git"
-#  brew install git
-  brew install git-flow
   ln -sf ${HOME}/dotfiles/git/git-clean-stale-local-branches /usr/local/bin
 
-  echo "Install utils"
-  brew untap homebrew/dupes
-  brew tap homebrew/dupes
-
-  brew install coreutils
-  brew install binutils
-  brew install diffutils
-  brew install findutils
-  brew install gnu-which
-  brew install gnu-sed
-  brew install grep
-  brew install gnu-tar
-  brew install gzip
-  brew install unzip
-  brew install watch
-  brew install wget
-  brew install curl
-  brew install nmap
-  brew install htop
-  brew install rsync
-  brew install bash-completion
-  brew install tree
-  brew install entr
-
-  brew install --cask warp
-
-  # Developer tools
-  brew install --cask visual-studio-code
-  brew install --cask ngrok
-  brew install --cask dbeaver-community
-
-  echo "Install MySQL"
-  brew install mysql
-
-  echo "Install PostgreSQL"
-  brew install postgres
-
-  echo "Install Python"
-  brew install python
-  brew install pyenv
-
-  echo "Install Java"
-  brew cask install java
-
-  echo "Install docker"
-  brew install --cask docker
-
-  echo "Install Sublime Text"
-  brew cask install sublime-text
   ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" /usr/local/bin/subl
-
-  # nvm
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-  nvm install node
-
-  echo "Install fonts"
-  brew tap homebrew/cask-fonts
-  brew install font-fira-code
 
   echo "Install config files"
   ln -sf ${HOME}/dotfiles/git/.gitconfig ${HOME} 
@@ -98,8 +38,6 @@ function install {
 
   ln -sf ${HOME}/dotfiles/zsh/.zshrc ${HOME}
   . ${HOME}/.zshrc
-
-  update
 }
 
 cmd=$1
