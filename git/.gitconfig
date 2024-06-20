@@ -8,9 +8,6 @@
 [includeIf "gitdir:~/issuu/"]
     path = ~/issuu/.gitconfig
 
-[credential]
-    helper=osxkeychain
-
 [push]
     default = simple
 
