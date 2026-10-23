@@ -1,4 +1,5 @@
 {
     "256color": true,
-    "terminfo": "xterm-256color"
+    "terminfo": "xterm-256color",
+    "theme": "Night Owl"
 }

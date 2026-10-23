@@ -2,7 +2,7 @@
 	"font_face": "JetBrainsMono Nerd Font Mono",
 	"font_size": 20,
 	"theme": "Default Dark.sublime-theme",
-	"color_scheme": "Mariana.sublime-color-scheme",
+	"color_scheme": "Packages/User/Night Owl.sublime-color-scheme",
 	"line_padding_top": 2,
 	"line_padding_bottom": 2,
 	"scroll_past_end": true,
