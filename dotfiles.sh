@@ -49,8 +49,12 @@ symlink_configs() {
   mkdir -p "${SUBL_DIR}"
   ln -sf "${DOTFILES}/sublime-text/Preferences.sublime-settings" "${SUBL_DIR}/"
   ln -sf "${DOTFILES}/sublime-text/Terminus.sublime-settings" "${SUBL_DIR}/"
+  ln -sf "${DOTFILES}/sublime-text/Debugger.sublime-settings" "${SUBL_DIR}/"
+  ln -sf "${DOTFILES}/sublime-text/Adaptive.sublime-theme" "${SUBL_DIR}/"
   rm -f "${SUBL_DIR}/Package Control.sublime-settings"
   cp "${DOTFILES}/sublime-text/Package Control.sublime-settings" "${SUBL_DIR}/"
+  mkdir -p "${SUBL_DIR}/Terminus"
+  ln -sf "${DOTFILES}/sublime-text/Terminus/Night Owl.json" "${SUBL_DIR}/Terminus/"
   info "Sublime Text config"
 
   success "Config files symlinked"
