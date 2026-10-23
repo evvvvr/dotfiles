@@ -1,0 +1,44 @@
+{
+    "editor.fontSize": 18,
+    "editor.fontFamily": "JetBrainsMono Nerd Font",
+    "editor.fontLigatures": true,
+    "liveshare.featureSet": "insiders",
+    "workbench.editor.enablePreview": false,
+    "liveshare.authenticationProvider": "GitHub",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "workbench.colorCustomizations": {
+        "terminal.background": "#041027"
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "git.confirmSync": false,
+    "window.openFilesInNewWindow": "on",
+    "editor.inlayHints.enabled": "off",
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "errorLens.excludeBySource": [
+        "ts(2311)",
+        "eslint(prettier/prettier)",
+        "ts(2322)"
+    ],
+    "workbench.editor.empty.hint": "hidden",
+    "explorer.confirmDragAndDrop": false,
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "files.autoSave": "afterDelay",
+    "chat.disableAIFeatures": true,
+    "claudeCode.preferredLocation": "panel",
+    "workbench.colorTheme": "Night Owl",
+    "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font Mono",
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.tabStopWidth": 4,
+    "terminal.integrated.lineHeight": 1.4,
+    "claudeCode.hideOnboarding": true,
+    "editor.minimap.enabled": false
+}

@@ -1,0 +1,42 @@
+[core]
+    editor = "subl -w"
+
+[user]
+    name = Volodymyr Halkin
+    email = vladgalkin@gmail.com
+
+[includeIf "gitdir:~/issuu/"]
+    path = ~/issuu/.gitconfig
+
+[push]
+    default = simple
+
+[pull]
+    rebase = merges
+
+[fetch]    
+    prune  = true
+
+[diff]
+    tool = "meld"
+
+[merge]
+    tool = "meld"
+
+[difftool]
+    prompt = false
+
+[mergetool]
+    keepBackup = false
+    prompt = false
+
+[alias]
+    clean-stale-local-branches = !git-clean-stale-local-branches
+[init]
+	defaultBranch = main
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential

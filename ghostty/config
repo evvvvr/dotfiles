@@ -1,0 +1,13 @@
+theme = TokyoNight
+
+scrollbar = never
+
+
+# typography
+font-family = "JetBrainsMono Nerd Font Mono"
+font-size = 14.5
+
+font-size=16
+font-thicken=true
+font-thicken-strength=1
+adjust-cell-height=1
