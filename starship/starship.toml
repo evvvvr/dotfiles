@@ -1,0 +1,53 @@
+# ~/.config/starship.toml  (stow: dotfiles/starship/.config/starship.toml)
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$nodejs\
+$python\
+$character"""
+
+add_newline = true
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "bold cyan"
+
+# --- Git branch ---
+[git_branch]
+symbol = " "
+style = "bold purple"
+format = "[$symbol$branch]($style) "
+
+# --- Git status: shows dirty/staged/ahead-behind ---
+[git_status]
+style = "bold yellow"
+format = '([\[$all_status$ahead_behind\]]($style) )'
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?${count}"
+stashed = '\$${count}'
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+# --- Node version (shows only in JS/TS projects) ---
+[nodejs]
+symbol = " "
+style = "bold green"
+format = "[$symbol($version )]($style)"
+
+# --- Python version (shows only in Python projects/venvs) ---
+[python]
+symbol = " "
+style = "bold yellow"
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"

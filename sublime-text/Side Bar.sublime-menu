@@ -1,0 +1,16 @@
+[
+    {
+        "id": "side-bar-files-open-with",
+        "children":
+        [
+            {
+                "caption": "Preview in Browser",
+                "id": "side-bar-files-open-with-markdown-preview",
+                "command": "markdown_preview",
+                "args": { "target": "browser", "parser": "markdown" },
+                "mnemonic": "p",
+                "filter_regex": ".*\\.md$"
+            }
+        ]
+    }
+]

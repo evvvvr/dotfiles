@@ -6,12 +6,15 @@ macOS setup scripts and configuration files.
 
 | Path | Contents |
 |------|----------|
+| `dotfiles.sh` | Main CLI — setup, sync, update |
 | `Brewfile` | Homebrew packages, casks, and VS Code extensions |
-| `setup.sh` | Full machine setup script |
-| `macos.sh` | macOS system preferences |
+| `setup.sh` | Fresh machine setup (called by `dotfiles.sh setup`) |
+| `macos.sh` | macOS system preferences (called by `dotfiles.sh sync`) |
 | `ghostty/` | Ghostty terminal config |
+| `sublime-text/` | Sublime Text preferences and package list |
 | `vscode/` | VS Code settings |
 | `git/` | Git config and helpers |
+| `starship/` | Starship prompt config |
 | `zsh/` | Zsh config |
 | `bash/` | Bash config |
 
@@ -29,10 +32,10 @@ macOS setup scripts and configuration files.
 
 3. Run setup:
    ```sh
-   bash ~/dotfiles/setup.sh
+   bash ~/dotfiles/dotfiles.sh setup
    ```
 
-`setup.sh` will:
+This will:
 - Check for Xcode Command Line Tools and prompt to install if missing
 - Install all packages and apps via Homebrew
 - Install Rust toolchain via `rustup`
@@ -40,35 +43,29 @@ macOS setup scripts and configuration files.
 - Install Node.js LTS via `mise`
 - Symlink all config files
 - Apply macOS system preferences
-- Generate an SSH key and copy the public key to clipboard (see below)
+- Generate an SSH key and copy the public key to clipboard
 
-### SSH key
-
-By default the script generates an ed25519 SSH key and copies the public key to your clipboard so you can paste it into [GitHub SSH settings](https://github.com/settings/ssh/new). To skip this (e.g. you're restoring an existing key):
-
+To skip SSH key generation (e.g. you're restoring an existing key):
 ```sh
-bash ~/dotfiles/setup.sh --skip-ssh
+bash ~/dotfiles/dotfiles.sh setup --skip-ssh
 ```
 
-## Keeping things updated
+## Day-to-day usage
 
-### Sync VS Code extensions
+### Sync machine to dotfiles
 
-After installing new extensions, update the Brewfile:
-```sh
-code --list-extensions
-# manually update the vscode entries in Brewfile
-```
-
-### Update macOS settings
-
-Edit `macos.sh` and re-run it:
-```sh
-bash ~/dotfiles/macos.sh
-```
-
-### Update packages
+Installs any missing packages, re-symlinks configs, applies macOS settings. Does not uninstall anything extra on the machine.
 
 ```sh
-brew bundle --file ~/dotfiles/Brewfile
+~/dotfiles/dotfiles.sh sync
 ```
+
+### Update dotfiles to match machine
+
+Auto-syncs VS Code extensions in the Brewfile and shows any brew packages installed but not tracked.
+
+```sh
+~/dotfiles/dotfiles.sh update
+```
+
+> macOS settings cannot be captured automatically — edit `macos.sh` manually when preferences change.

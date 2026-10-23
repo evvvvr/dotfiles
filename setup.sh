@@ -41,12 +41,16 @@ fi
 BREW_PREFIX="$(brew --prefix)"
 
 header "📦 Installing packages"
-brew bundle --file Brewfile
+brew bundle --file "${HOME}/dotfiles/Brewfile"
 success "Homebrew packages installed"
 
 header "🦀 Rust"
-rustup-init -y
-success "Rust toolchain installed"
+if command -v rustup &>/dev/null; then
+  success "Rust already installed"
+else
+  rustup-init -y
+  success "Rust toolchain installed"
+fi
 
 header "🐍 Python"
 uv python install
@@ -76,6 +80,18 @@ info ".bash_profile"
 
 ln -sf "${HOME}/dotfiles/zsh/.zshrc" "${HOME}"
 info ".zshrc"
+
+mkdir -p "${HOME}/.config"
+ln -sf "${HOME}/dotfiles/starship/starship.toml" "${HOME}/.config/starship.toml"
+info "starship config"
+
+SUBL_DIR="${HOME}/Library/Application Support/Sublime Text/Packages/User"
+mkdir -p "${SUBL_DIR}"
+ln -sf "${HOME}/dotfiles/sublime-text/Preferences.sublime-settings" "${SUBL_DIR}/"
+ln -sf "${HOME}/dotfiles/sublime-text/Terminus.sublime-settings" "${SUBL_DIR}/"
+rm -f "${SUBL_DIR}/Package Control.sublime-settings"
+cp "${HOME}/dotfiles/sublime-text/Package Control.sublime-settings" "${SUBL_DIR}/"
+info "Sublime Text config"
 
 header "🍎 macOS settings"
 "${HOME}/dotfiles/macos.sh"

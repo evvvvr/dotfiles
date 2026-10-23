@@ -2,6 +2,7 @@
 
 export EDITOR="zed --wait"
 export LANG=en_US.UTF-8
+export TERM=xterm-256color
 
 # --- Homebrew (Apple Silicon) ---
 [ -d /opt/homebrew/bin ] && eval "$(/opt/homebrew/bin/brew shellenv)"
