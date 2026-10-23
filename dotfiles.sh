@@ -51,6 +51,7 @@ symlink_configs() {
   ln -sf "${DOTFILES}/sublime-text/Terminus.sublime-settings" "${SUBL_DIR}/"
   ln -sf "${DOTFILES}/sublime-text/Debugger.sublime-settings" "${SUBL_DIR}/"
   ln -sf "${DOTFILES}/sublime-text/Adaptive.sublime-theme" "${SUBL_DIR}/"
+  ln -sf "${DOTFILES}/sublime-text/Side Bar.sublime-menu" "${SUBL_DIR}/"
   rm -f "${SUBL_DIR}/Package Control.sublime-settings"
   cp "${DOTFILES}/sublime-text/Package Control.sublime-settings" "${SUBL_DIR}/"
   mkdir -p "${SUBL_DIR}/Terminus"
