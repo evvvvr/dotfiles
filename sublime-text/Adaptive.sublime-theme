@@ -18,6 +18,23 @@
             "layer0.tint": "#011627"
         },
         {
+            "class": "title_bar",
+            "bg": "#011627"
+        },
+        {
+            "class": "tabset_control",
+            "layer0.tint": "#011627"
+        },
+        {
+            "class": "tab_control",
+            "layer0.tint": "#011627"
+        },
+        {
+            "class": "tab_control",
+            "attributes": ["selected"],
+            "layer0.tint": "#0b2942"
+        },
+        {
             "class": "quick_panel_label",
             "fg": "#d6deeb"
         },
