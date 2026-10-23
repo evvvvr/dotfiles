@@ -4,6 +4,11 @@ format = """
 $directory\
 $git_branch\
 $git_status\
+$aws\
+$kubernetes\
+$docker_context\
+$terraform\
+$cmd_duration\
 $line_break\
 $character"""
 
@@ -46,6 +51,32 @@ format = '([$symbol($version )]($style))'
 symbol = " "
 style = "dimmed white"
 format = '([$virtualenv ]($style))'
+
+[aws]
+symbol = "☁ "
+style = "bold yellow"
+format = '([$symbol$profile(\($region\))]($style) )'
+
+[kubernetes]
+symbol = "⎈ "
+style = "bold blue"
+format = '([$symbol$context(\($namespace\))]($style) )'
+disabled = false
+
+[docker_context]
+symbol = "🐳 "
+style = "bold blue"
+format = '([$symbol$context]($style) )'
+
+[terraform]
+symbol = "󱁢 "
+style = "bold purple"
+format = '([$symbol$workspace]($style) )'
+
+[cmd_duration]
+min_time = 2000
+style = "dimmed yellow"
+format = '(took [$duration]($style) )'
 
 [character]
 success_symbol = "[❯](bold green)"
