@@ -89,6 +89,17 @@ def find_tests(content: str, filepath: str) -> List[TestNode]:
     return root
 
 
+def collect_cargo_filters(nodes: List[TestNode]) -> List[str]:
+    """Flatten a node tree into a list of cargo filter strings (test fns only)."""
+    result: List[str] = []
+    for node in nodes:
+        if not node.is_suite:
+            result.append(node.cargo_filter)
+        if node.children:
+            result.extend(collect_cargo_filters(node.children))
+    return result
+
+
 def scan_project(root_dir: str) -> List[Tuple[str, List[TestNode]]]:
     """Walk a Cargo project and return (relative_path, tests) for every .rs file that has tests."""
     results = []

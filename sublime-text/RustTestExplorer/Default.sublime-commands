@@ -8,6 +8,14 @@
         "command": "rust_test_run"
     },
     {
+        "caption": "Rust Tests: Run Test at Cursor",
+        "command": "rust_test_run_at_cursor"
+    },
+    {
+        "caption": "Rust Tests: Re-run Last Test",
+        "command": "rust_test_rerun_last"
+    },
+    {
         "caption": "Rust Tests: Refresh Explorer",
         "command": "rust_test_refresh"
     }

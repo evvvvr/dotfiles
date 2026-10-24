@@ -6,15 +6,41 @@ from __future__ import annotations
 import re
 import sublime
 import sublime_plugin
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
-from . import explorer, phantoms, runner
+from . import explorer, finder, phantoms, runner, status_store
 
 
-_active_runs: Dict[int, runner.TestRun] = {}  # window.id() → TestRun
+_active_runs: Dict[int, runner.TestRun] = {}
+_pending_redraw: Dict[int, bool]        = {}   # debounce flag per window
 
 _IGNORE_LINE = re.compile(r'^\s*#\[ignore\b')
 _ATTR_LINE   = re.compile(r'^\s*#\[')
+
+
+# ------------------------------------------------------------------ #
+# Status refresh helpers
+# ------------------------------------------------------------------ #
+
+def _schedule_redraw(window_id: int):
+    """Debounced status refresh: coalesces rapid result lines into one repaint."""
+    if _pending_redraw.get(window_id):
+        return
+    _pending_redraw[window_id] = True
+    sublime.set_timeout(lambda: _do_redraw(window_id), 120)
+
+
+def _do_redraw(window_id: int):
+    _pending_redraw.pop(window_id, None)
+    w = next((w for w in sublime.windows() if w.id() == window_id), None)
+    if not w:
+        return
+    ev = explorer.ExplorerView._instances.get(window_id)
+    if ev:
+        ev.redraw_status()
+    for v in w.views():
+        if v.file_name() and v.file_name().endswith('.rs'):
+            phantoms.redraw_status(v)
 
 
 # ------------------------------------------------------------------ #
@@ -41,31 +67,47 @@ class RustTestRunCommand(sublime_plugin.WindowCommand):
             sublime.error_message('RustTestExplorer: no Cargo.toml found.')
             return
 
+        # Cancel any in-flight run
         prev = _active_runs.get(self.window.id())
         if prev:
             prev.cancel()
 
-        panel = self._prepare_panel(filter, root)
+        # Collect all known cargo filters for status tracking
+        all_filters: List[str] = []
+        for _, nodes in ev._scan:
+            all_filters.extend(finder.collect_cargo_filters(nodes))
+
+        status_store.start_run(self.window.id(), filter, all_filters)
+        _schedule_redraw(self.window.id())
+
+        panel  = self._prepare_panel(filter, root)
+        wid    = self.window.id()
 
         def on_output(text: str):
+            # Parse result lines and update status store
+            result = status_store.parse_line(wid, text)
+            if result:
+                _schedule_redraw(wid)
             sublime.set_timeout(lambda: panel.run_command('append', {
                 'characters': text, 'force': True, 'scroll_to_end': True,
             }), 0)
 
         def on_done(rc: int):
-            _active_runs.pop(self.window.id(), None)
+            _active_runs.pop(wid, None)
             msg = '\n✓ All tests passed\n' if rc == 0 else f'\n✗ Tests failed (exit {rc})\n'
             sublime.set_timeout(lambda: panel.run_command('append', {
                 'characters': msg, 'force': True, 'scroll_to_end': True,
             }), 0)
+            # Final redraw to clear any lingering RUNNING badges
+            sublime.set_timeout(lambda: _do_redraw(wid), 150)
 
         run = runner.TestRun(
             cwd=root, filter_arg=filter, on_output=on_output, on_done=on_done,
         )
-        _active_runs[self.window.id()] = run
+        _active_runs[wid] = run
         run.start()
 
-    def _prepare_panel(self, filter_arg, root: str) -> sublime.View:
+    def _prepare_panel(self, filter_arg: Optional[str], root: str) -> sublime.View:
         panel = self.window.create_output_panel('rust_tests')
         panel.settings().set('word_wrap', False)
         panel.set_read_only(False)
@@ -80,38 +122,78 @@ class RustTestRunCommand(sublime_plugin.WindowCommand):
         return panel
 
 
-class RustTestToggleIgnoreCommand(sublime_plugin.WindowCommand):
-    """Opens the file (if needed) and delegates the edit to the TextCommand below."""
+class RustTestRunAtCursorCommand(sublime_plugin.WindowCommand):
+    """Run the test function whose declaration is closest above the cursor."""
 
+    def run(self):
+        view = self.window.active_view()
+        if not view or not view.file_name() or not view.file_name().endswith('.rs'):
+            sublime.status_message('RustTestExplorer: not a Rust file')
+            return
+
+        cursor_row = view.rowcol(view.sel()[0].begin())[0]
+        all_nodes  = finder.find_tests(
+            view.substr(sublime.Region(0, view.size())), view.file_name()
+        )
+        flat: List[finder.TestNode] = []
+        _flatten_all(all_nodes, flat)
+
+        # Nearest test fn at or before cursor
+        best: Optional[finder.TestNode] = None
+        for node in flat:
+            if not node.is_suite and node.line <= cursor_row:
+                if best is None or node.line > best.line:
+                    best = node
+
+        if best is None:
+            sublime.status_message('RustTestExplorer: no test found at or above cursor')
+            return
+
+        sublime.status_message(f'RustTestExplorer: running {best.cargo_filter}')
+        self.window.run_command('rust_test_run', {'filter': best.cargo_filter})
+
+    def is_enabled(self):
+        v = self.window.active_view()
+        return bool(v and v.file_name() and v.file_name().endswith('.rs'))
+
+
+class RustTestRerunLastCommand(sublime_plugin.WindowCommand):
+    """Re-run whatever `cargo test` invocation was last used."""
+
+    def run(self):
+        if not status_store.has_last(self.window.id()):
+            sublime.status_message('RustTestExplorer: no previous test run')
+            return
+        f = status_store.get_last(self.window.id())
+        self.window.run_command('rust_test_run', {'filter': f})
+
+    def is_enabled(self):
+        return status_store.has_last(self.window.id())
+
+
+class RustTestToggleIgnoreCommand(sublime_plugin.WindowCommand):
     def run(self, file: str, fn_line: int, has_ignore: bool):
         view = self.window.open_file(file)
         args = {'fn_line': fn_line, 'has_ignore': has_ignore}
         if view.is_loading():
-            # Poll until loaded, then edit
             sublime.set_timeout(lambda: self._when_loaded(view, args), 50)
         else:
             view.run_command('rust_test_toggle_ignore_internal', args)
 
     def _when_loaded(self, view: sublime.View, args: dict, attempts: int = 0):
         if view.is_loading() and attempts < 40:
-            sublime.set_timeout(
-                lambda: self._when_loaded(view, args, attempts + 1), 50
-            )
+            sublime.set_timeout(lambda: self._when_loaded(view, args, attempts + 1), 50)
         else:
             view.run_command('rust_test_toggle_ignore_internal', args)
 
 
 class RustTestToggleIgnoreInternalCommand(sublime_plugin.TextCommand):
-    """TextCommand that performs the actual buffer edit."""
-
     def run(self, edit: sublime.Edit, fn_line: int, has_ignore: bool):
-        view = self.view
         if has_ignore:
-            self._remove_ignore(view, edit, fn_line)
+            self._remove_ignore(edit, fn_line)
         else:
-            self._add_ignore(view, edit, fn_line)
-
-        # Refresh phantoms on this view and the explorer
+            self._add_ignore(edit, fn_line)
+        view = self.view
         sublime.set_timeout(lambda: phantoms.update(view), 10)
         w = view.window()
         if w:
@@ -119,36 +201,28 @@ class RustTestToggleIgnoreInternalCommand(sublime_plugin.TextCommand):
             if ev:
                 sublime.set_timeout(ev.refresh, 10)
 
-    # -- helpers --
-
-    def _remove_ignore(self, view: sublime.View, edit: sublime.Edit, fn_line: int):
+    def _remove_ignore(self, edit: sublime.Edit, fn_line: int):
+        view = self.view
         for row in range(fn_line - 1, max(fn_line - 8, -1), -1):
             region = view.line(view.text_point(row, 0))
             if _IGNORE_LINE.match(view.substr(region)):
-                # Erase the line + its newline
                 erase = sublime.Region(region.begin(), region.end() + 1)
                 if erase.end() > view.size():
                     erase = sublime.Region(region.begin() - 1, region.end())
                 view.erase(edit, erase)
                 return
 
-    def _add_ignore(self, view: sublime.View, edit: sublime.Edit, fn_line: int):
-        # Find the indentation from the fn line
+    def _add_ignore(self, edit: sublime.Edit, fn_line: int):
+        view    = self.view
         fn_text = view.substr(view.line(view.text_point(fn_line, 0)))
-        indent  = len(fn_text) - len(fn_text.lstrip())
-        spaces  = fn_text[:indent]
-
-        # Walk back to find the top of the attribute block
+        spaces  = fn_text[:len(fn_text) - len(fn_text.lstrip())]
         attr_start = fn_line
         for row in range(fn_line - 1, max(fn_line - 10, -1), -1):
-            line_text = view.substr(view.line(view.text_point(row, 0))).strip()
-            if _ATTR_LINE.match(line_text):
+            if _ATTR_LINE.match(view.substr(view.line(view.text_point(row, 0))).strip()):
                 attr_start = row
             else:
-                break  # hit a non-attribute line (e.g. blank, comment, code)
-
-        insert_pos = view.text_point(attr_start, 0)
-        view.insert(edit, insert_pos, f'{spaces}#[ignore]\n')
+                break
+        view.insert(edit, view.text_point(attr_start, 0), f'{spaces}#[ignore]\n')
 
 
 # ------------------------------------------------------------------ #
@@ -170,7 +244,18 @@ class RustTestEventListener(sublime_plugin.EventListener):
     def on_close(self, view: sublime.View):
         phantoms.clear(view)
         if view.settings().get('rust_test_explorer'):
-            w = view.window()
+            w   = view.window()
             wid = w.id() if w else None
             if wid and wid in explorer.ExplorerView._instances:
                 del explorer.ExplorerView._instances[wid]
+
+
+# ------------------------------------------------------------------ #
+# Helpers
+# ------------------------------------------------------------------ #
+
+def _flatten_all(nodes: List[finder.TestNode], result: List[finder.TestNode]):
+    for node in nodes:
+        result.append(node)
+        if node.children:
+            _flatten_all(node.children, result)
