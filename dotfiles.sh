@@ -45,7 +45,11 @@ symlink_configs() {
   ln -sf "${DOTFILES}/starship/starship.toml" "${HOME}/.config/starship.toml"
   info "starship config"
 
-  SUBL_DIR="${HOME}/Library/Application Support/Sublime Text/Packages/User"
+  SUBL_PACKAGES="${HOME}/Library/Application Support/Sublime Text/Packages"
+  ln -sf "${DOTFILES}/sublime-text/RustTestExplorer" "${SUBL_PACKAGES}/RustTestExplorer"
+  info "Sublime Text RustTestExplorer plugin"
+
+  SUBL_DIR="${SUBL_PACKAGES}/User"
   mkdir -p "${SUBL_DIR}"
   ln -sf "${DOTFILES}/sublime-text/Preferences.sublime-settings" "${SUBL_DIR}/"
   ln -sf "${DOTFILES}/sublime-text/Terminus.sublime-settings" "${SUBL_DIR}/"

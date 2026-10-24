@@ -1,0 +1,14 @@
+[
+    {
+        "caption": "Rust Tests: Open Test Explorer",
+        "command": "rust_test_open_explorer"
+    },
+    {
+        "caption": "Rust Tests: Run All Tests",
+        "command": "rust_test_run"
+    },
+    {
+        "caption": "Rust Tests: Refresh Explorer",
+        "command": "rust_test_refresh"
+    }
+]
