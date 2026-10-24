@@ -1,6 +1,7 @@
 brew "awscli"
 brew "bash-completion"
 brew "bat"
+brew "btop"
 brew "binutils"
 brew "coreutils"
 brew "curl"

@@ -82,6 +82,7 @@ alias g="git"
 alias gs="git status"
 alias gl="git log --oneline --graph --decorate -20"
 alias lg="lazygit"
+alias top="btop"
 alias ld="lazydocker"
 alias pn="pnpm"
 
