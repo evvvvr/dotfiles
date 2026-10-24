@@ -2,11 +2,48 @@
 
 export EDITOR="zed --wait"
 export LANG=en_US.UTF-8
-export TERM=xterm-256color
 
 # --- Homebrew (Apple Silicon) ---
 [ -d /opt/homebrew/bin ] && eval "$(/opt/homebrew/bin/brew shellenv)"
-autoload -Uz compinit && compinit
+
+# --- Unique path / fpath entries ---
+typeset -U path fpath
+
+# --- PATH exports ---
+export PNPM_HOME="$HOME/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# --- Completions ---
+_zsh_comp_dir="${HOME}/.zsh/completions"
+[[ -d $_zsh_comp_dir ]] || mkdir -p "$_zsh_comp_dir"
+fpath=("$_zsh_comp_dir" $fpath)
+
+_regen_comp() {
+  local out="$1"; shift
+  if [[ ! -f $out || $(( $(date +%s) - $(stat -f %m "$out") )) -gt 86400 ]]; then
+    local tmp="${out}.tmp.$$"
+    if "$@" > "$tmp" 2>/dev/null && [[ -s $tmp ]]; then
+      mv "$tmp" "$out"
+      rm -f "${ZDOTDIR:-$HOME}/.zcompdump"
+    else
+      rm -f "$tmp"
+    fi
+  fi
+}
+_regen_comp "$_zsh_comp_dir/_uv"   uv generate-shell-completion zsh
+_regen_comp "$_zsh_comp_dir/_mise" mise completion zsh
+_regen_comp "$_zsh_comp_dir/_pnpm" pnpm completion zsh
+
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'r:|=*' 'l:|=* r:|=*'
 
 # --- mise: node + python version management (auto-switches per dir) ---
 eval "$(mise activate zsh)"
@@ -24,7 +61,17 @@ eval "$(tv init zsh)"
 HISTSIZE=50000
 SAVEHIST=50000
 HISTFILE=~/.zsh_history
-setopt SHARE_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE
+setopt SHARE_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE \
+       EXTENDED_HISTORY HIST_FIND_NO_DUPS HIST_REDUCE_BLANKS
+
+# --- Options ---
+setopt AUTO_CD INTERACTIVE_COMMENTS
+
+# --- Key bindings ---
+bindkey '^[[A' history-search-backward
+bindkey '^[OA' history-search-backward
+bindkey '^[[B' history-search-forward
+bindkey '^[OB' history-search-forward
 
 # --- Aliases ---
 alias ls="eza --icons --group-directories-first"
@@ -38,12 +85,13 @@ alias lg="lazygit"
 alias ld="lazydocker"
 alias pn="pnpm"
 
-# --- pnpm ---
-export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-
-# --- uv (python) ---
-export PATH="$HOME/.local/bin:$PATH"
-
 alias awsume="source awsume"
 
+# --- Plugins (zsh-syntax-highlighting must be last) ---
+_brew="${HOMEBREW_PREFIX:-/opt/homebrew}"
+[[ -f ${_brew}/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
+  source "${_brew}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -f ${_brew}/share/zsh-you-should-use/you-should-use.plugin.zsh ]] &&
+  source "${_brew}/share/zsh-you-should-use/you-should-use.plugin.zsh"
+[[ -f ${_brew}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+  source "${_brew}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
