@@ -34,6 +34,7 @@ def update(view: sublime.View):
         _sets[view.id()] = ps
 
     _place(view, flat, ps)
+    _fade_ignored(view, flat)
 
 
 def redraw_status(view: sublime.View):
@@ -49,6 +50,7 @@ def clear(view: sublime.View):
     if ps:
         ps.update([])
     _cache.pop(view.id(), None)
+    view.erase_regions('rust_test_ignored')
 
 
 # ------------------------------------------------------------------ #
@@ -97,6 +99,42 @@ def _place(view: sublime.View, flat: List[finder.TestNode], ps: sublime.PhantomS
         ))
 
     ps.update(phantoms)
+
+
+def _fade_ignored(view: sublime.View, flat: List[finder.TestNode]):
+    """
+    Mark ignored test attribute blocks with a solid underline using the
+    'comment' scope color (gray + italic in most dark themes).
+    Covers from the topmost #[...] attribute above the fn line down to
+    the fn declaration itself, so the whole header reads as inactive.
+    """
+    regions = []
+    lines = view.substr(sublime.Region(0, view.size())).splitlines()
+    for node in flat:
+        if node.is_suite or not node.ignored:
+            continue
+        # Walk back from the fn line through consecutive attribute lines
+        top = node.line
+        for row in range(node.line - 1, max(node.line - 10, -1), -1):
+            if row < len(lines) and lines[row].strip().startswith('#['):
+                top = row
+            else:
+                break
+        start = view.text_point(top, 0)
+        end   = view.line(view.text_point(node.line, 0)).end()
+        regions.append(sublime.Region(start, end))
+
+    if regions:
+        view.add_regions(
+            'rust_test_ignored',
+            regions,
+            scope='comment',
+            flags=sublime.DRAW_SOLID_UNDERLINE
+                  | sublime.DRAW_NO_FILL
+                  | sublime.DRAW_NO_OUTLINE,
+        )
+    else:
+        view.erase_regions('rust_test_ignored')
 
 
 def _flatten(nodes: List[finder.TestNode], result: List[finder.TestNode]):
