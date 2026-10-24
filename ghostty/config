@@ -1,13 +1,19 @@
 theme = TokyoNight
 
 scrollbar = never
-
+background-opacity = 0.92
 
 # typography
 font-family = "JetBrainsMono Nerd Font Mono"
-font-size = 14.5
+font-size = 16
+font-thicken = true
+font-thicken-strength = 1
+adjust-cell-height = 1
 
-font-size=16
-font-thicken=true
-font-thicken-strength=1
-adjust-cell-height=1
+# cursor
+cursor-style = block
+cursor-style-blink = true
+
+# padding
+window-padding-x = 12
+window-padding-y = 8
