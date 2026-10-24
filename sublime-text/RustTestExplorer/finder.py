@@ -16,12 +16,14 @@ class TestNode:
     line: int           # 0-indexed line of the fn / mod declaration
     is_suite: bool      # True = mod, False = fn
     children: 'List[TestNode]' = field(default_factory=list)
+    ignored: bool = False
 
 
-_TEST_ATTR = re.compile(r'^\s*#\[(?:(?:tokio|async_std)::)?test\b')
-_CFG_TEST  = re.compile(r'^\s*#\[cfg\(test\)\]')
-_FN_DECL   = re.compile(r'\bfn\s+(\w+)\s*[<(]')
-_MOD_DECL  = re.compile(r'\bmod\s+(\w+)\s*\{')
+_TEST_ATTR   = re.compile(r'^\s*#\[(?:(?:tokio|async_std)::)?test\b')
+_IGNORE_ATTR = re.compile(r'^\s*#\[ignore\b')
+_CFG_TEST    = re.compile(r'^\s*#\[cfg\(test\)\]')
+_FN_DECL     = re.compile(r'\bfn\s+(\w+)\s*[<(]')
+_MOD_DECL    = re.compile(r'\bmod\s+(\w+)\s*\{')
 
 
 def find_tests(content: str, filepath: str) -> List[TestNode]:
@@ -30,8 +32,9 @@ def find_tests(content: str, filepath: str) -> List[TestNode]:
     # stack entries: [name, prefix, children_list, entry_depth]
     stack: List[list] = []
     depth = 0
-    pending_test  = False
-    pending_suite = False
+    pending_test   = False
+    pending_suite  = False
+    pending_ignore = False
 
     def cur_children() -> List[TestNode]:
         return stack[-1][2] if stack else root
@@ -47,17 +50,25 @@ def find_tests(content: str, filepath: str) -> List[TestNode]:
 
         if _TEST_ATTR.match(raw):
             pending_test = True
+        if _IGNORE_ATTR.match(raw):
+            pending_ignore = True
         if _CFG_TEST.match(raw):
             pending_suite = True
 
-        if pending_test:
-            m = _FN_DECL.search(code)
-            if m:
-                name = m.group(1)
-                prefix = cur_prefix()
-                cargo = f'{prefix}::{name}' if prefix else name
-                cur_children().append(TestNode(name, cargo, filepath, lineno, False))
-                pending_test = False
+        fn_match = _FN_DECL.search(code)
+
+        if pending_test and fn_match:
+            name = fn_match.group(1)
+            prefix = cur_prefix()
+            cargo = f'{prefix}::{name}' if prefix else name
+            cur_children().append(
+                TestNode(name, cargo, filepath, lineno, False, ignored=pending_ignore)
+            )
+            pending_test   = False
+            pending_ignore = False
+        elif fn_match:
+            # Non-test fn: discard any stray #[ignore] that isn't for a test
+            pending_ignore = False
 
         if pending_suite:
             m = _MOD_DECL.search(code)

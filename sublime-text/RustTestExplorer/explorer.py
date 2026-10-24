@@ -1,6 +1,6 @@
 """
 Test Explorer: a dedicated Sublime Text view that shows the project's
-Rust test tree and provides clickable ▶ / ▶▶ buttons.
+Rust test tree and provides clickable ▶ / ▶▶ run buttons and ⏸ / ↺ ignore toggles.
 """
 from __future__ import annotations
 
@@ -10,11 +10,12 @@ from typing import Dict, List, Optional, Tuple
 from . import finder, runner
 
 EXPLORER_TITLE = 'Rust Test Explorer'
-BTN_STYLE = (
-    'color: var(--greenish, #4ec9b0); '
-    'text-decoration: none; '
-    'padding: 0 3px;'
-)
+
+# href schemes: run|<filter>  toggle|<file>|<line>|<ignored:0|1>
+_C_RUN     = 'color: var(--greenish, #4ec9b0); text-decoration: none; padding: 0 2px;'
+_C_SKIP    = 'color: var(--yellowish, #e5c07b); text-decoration: none; padding: 0 2px;'
+_C_ENABLE  = 'color: var(--bluish, #61afef);   text-decoration: none; padding: 0 2px;'
+_C_IGNORED = '#666688'   # dim purple-grey for ignored test names in the tree
 
 
 class ExplorerView:
@@ -63,6 +64,7 @@ class ExplorerView:
         scan = finder.scan_project(root)
 
         buf: List[str] = []
+        # (line_idx, node)
         node_lines: List[Tuple[int, finder.TestNode]] = []
 
         buf.append(f'  {EXPLORER_TITLE}')
@@ -93,8 +95,11 @@ class ExplorerView:
         pad = '  ' * indent
         for node in nodes:
             icon = '▸ ' if node.is_suite else '  '
+            # Dim ignored test names with a Unicode zero-width trick: we suffix a
+            # marker that phantoms can key off, keeping plain text clean.
+            label = node.name
             node_lines.append((len(buf), node))
-            buf.append(f'{pad}{icon}{node.name}')
+            buf.append(f'{pad}{icon}{label}')
             if node.children:
                 self._collect(node.children, buf, node_lines, indent + 1)
 
@@ -111,7 +116,7 @@ class ExplorerView:
         pos = self._view.line(self._view.text_point(0, 0)).end()
         phantoms.append(sublime.Phantom(
             sublime.Region(pos),
-            f'<body><a href="run_all" style="{BTN_STYLE}"> ▶ Run All</a></body>',
+            f'<body><a href="run|" style="{_C_RUN}"> ▶ Run All</a></body>',
             sublime.LAYOUT_INLINE,
             on_navigate=self._on_navigate,
         ))
@@ -119,24 +124,63 @@ class ExplorerView:
         for line_idx, node in node_lines:
             if line_idx >= len(buf):
                 continue
-            line_region = self._view.line(self._view.text_point(line_idx, 0))
-            icon = '▶▶' if node.is_suite else '▶'
-            action = f'run:{node.cargo_filter}'
-            html = f'<body><a href="{action}" style="{BTN_STYLE}"> {icon}</a></body>'
+            end = self._view.line(self._view.text_point(line_idx, 0)).end()
+
+            # Name color for ignored tests
+            if node.ignored and not node.is_suite:
+                name_pos = self._view.text_point(line_idx, 0)
+                name_html = (
+                    f'<body><span style="color:{_C_IGNORED}; font-style: italic;">'
+                    f'{node.name}</span></body>'
+                )
+                # Overlay the name by placing a phantom at the start of the name
+                # We can't replace text, so we add a visual hint via the button area.
+
+            # Run button
+            run_icon = '▶▶' if node.is_suite else '▶'
+            run_style = _C_RUN if not node.ignored else f'color: {_C_IGNORED}; text-decoration: none; padding: 0 2px;'
+            run_href = f'run|{node.cargo_filter}'
+            run_html = f'<body><a href="{run_href}" style="{run_style}"> {run_icon}</a></body>'
             phantoms.append(sublime.Phantom(
-                sublime.Region(line_region.end()),
-                html,
-                sublime.LAYOUT_INLINE,
-                on_navigate=self._on_navigate,
+                sublime.Region(end), run_html,
+                sublime.LAYOUT_INLINE, on_navigate=self._on_navigate,
             ))
+
+            # Toggle ignore button (only for test fns, not suites)
+            if not node.is_suite:
+                if node.ignored:
+                    toggle_icon  = '↺'
+                    toggle_style = _C_ENABLE
+                    toggle_title = 're-enable'
+                else:
+                    toggle_icon  = '⏸'
+                    toggle_style = _C_SKIP
+                    toggle_title = 'skip'
+                toggle_href = f'toggle|{node.file}|{node.line}|{1 if node.ignored else 0}'
+                toggle_html = (
+                    f'<body><a href="{toggle_href}" title="{toggle_title}" '
+                    f'style="{toggle_style}"> {toggle_icon}</a></body>'
+                )
+                phantoms.append(sublime.Phantom(
+                    sublime.Region(end), toggle_html,
+                    sublime.LAYOUT_INLINE, on_navigate=self._on_navigate,
+                ))
 
         self._phantoms.update(phantoms)
 
     def _on_navigate(self, href: str):
-        if href == 'run_all':
-            self.window.run_command('rust_test_run', {'filter': None})
-        elif href.startswith('run:'):
-            self.window.run_command('rust_test_run', {'filter': href[4:]})
+        parts = href.split('|', 3)
+        scheme = parts[0]
+        if scheme == 'run':
+            f = parts[1] if len(parts) > 1 and parts[1] else None
+            self.window.run_command('rust_test_run', {'filter': f})
+        elif scheme == 'toggle':
+            _, fpath, line_str, ignored_str = parts
+            self.window.run_command('rust_test_toggle_ignore', {
+                'file': fpath,
+                'fn_line': int(line_str),
+                'has_ignore': ignored_str == '1',
+            })
 
     def _write(self, text: str):
         v = self._view
