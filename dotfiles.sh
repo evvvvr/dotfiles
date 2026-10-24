@@ -46,7 +46,7 @@ symlink_configs() {
   info "starship config"
 
   SUBL_PACKAGES="${HOME}/Library/Application Support/Sublime Text/Packages"
-  ln -sf "${DOTFILES}/sublime-text/RustTestExplorer" "${SUBL_PACKAGES}/RustTestExplorer"
+  ln -sf "${HOME}/projects/RustTestExplorer" "${SUBL_PACKAGES}/RustTestExplorer"
   info "Sublime Text RustTestExplorer plugin"
 
   SUBL_DIR="${SUBL_PACKAGES}/User"
