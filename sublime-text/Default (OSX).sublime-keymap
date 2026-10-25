@@ -1,0 +1,6 @@
+[
+  {
+    "keys": ["super+alt+t"],
+    "command": "toggle_terminus_panel"
+  }
+]
