@@ -40,25 +40,25 @@ fi
 
 BREW_PREFIX="$(brew --prefix)"
 
-header "📦 Installing packages"
+header "📦 CLI tools"
 brew bundle --file "${HOME}/dotfiles/Brewfile"
 success "Homebrew packages installed"
 
-header "🦀 Rust"
+header "⚙️ Languages & runtimes"
 if command -v rustup &>/dev/null; then
   success "Rust already installed"
 else
   rustup-init -y
   success "Rust toolchain installed"
 fi
-
-header "🐍 Python"
 uv python install
 success "Python installed"
-
-header "🟢 Node.js"
 "${BREW_PREFIX}/bin/mise" use --global node@lts
 success "Node.js LTS installed"
+
+header "🗄️ Database tools"
+uv tool install harlequin
+success "harlequin installed"
 
 header "🔗 Symlinking config files"
 
