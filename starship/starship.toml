@@ -1,6 +1,8 @@
 # ~/.config/starship.toml  (stow: dotfiles/starship/.config/starship.toml)
 
 format = """
+$username\
+$hostname\
 $directory\
 $git_branch\
 $git_status\
@@ -13,6 +15,16 @@ $line_break\
 $character"""
 
 add_newline = true
+
+[username]
+show_always = false
+style_user = "bold yellow"
+format = "[$user]($style) "
+
+[hostname]
+ssh_only = true
+style = "bold yellow"
+format = "[@$hostname]($style) "
 
 [directory]
 truncation_length = 3

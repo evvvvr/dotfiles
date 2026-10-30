@@ -96,3 +96,11 @@ _brew="${HOMEBREW_PREFIX:-/opt/homebrew}"
   source "${_brew}/share/zsh-you-should-use/you-should-use.plugin.zsh"
 [[ -f ${_brew}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
   source "${_brew}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# --- Cursor shape: blinking block ---
+# Must be after zsh-syntax-highlighting so zle-line-init hook runs last.
+_cursor_blinking_block() { printf '\e[1 q' }
+autoload -Uz add-zsh-hook add-zle-hook-widget
+add-zsh-hook precmd  _cursor_blinking_block
+add-zsh-hook preexec _cursor_blinking_block
+add-zle-hook-widget line-init _cursor_blinking_block

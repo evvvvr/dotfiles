@@ -2,5 +2,33 @@
   {
     "keys": ["super+alt+t"],
     "command": "toggle_terminus_panel"
-  }
+  },
+    // Move to beginning of the previous word (Alt + Left)
+    {
+        "keys": ["alt+left"],
+        "command": "terminus_keypress",
+        "args": {"key": "b", "alt": true},
+        "context": [{"key": "terminus_view"}]
+    },
+    // Move to end/next word (Alt + Right)
+    {
+        "keys": ["alt+right"],
+        "command": "terminus_keypress",
+        "args": {"key": "f", "alt": true},
+        "context": [{"key": "terminus_view"}]
+    },
+    // Move to beginning of the line (Cmd + Left)
+    {
+        "keys": ["super+left"],
+        "command": "terminus_keypress",
+        "args": {"key": "a", "ctrl": true},
+        "context": [{"key": "terminus_view"}]
+    },
+    // Move to end of the line (Cmd + Right)
+    {
+        "keys": ["super+right"],
+        "command": "terminus_keypress",
+        "args": {"key": "e", "ctrl": true},
+        "context": [{"key": "terminus_view"}]
+    }
 ]
