@@ -1,6 +1,6 @@
 # ~/.zshrc  (managed via stow: dotfiles/zsh/.zshrc)
 
-export EDITOR="zed --wait"
+export EDITOR="subl --wait"
 export LANG=en_US.UTF-8
 
 # --- Homebrew (Apple Silicon) ---

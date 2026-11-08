@@ -1,12 +1,19 @@
 [core]
     editor = "subl -w"
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    line-numbers = true
+    side-by-side = true
 
 [user]
     name = Volodymyr Halkin
-    email = vladgalkin@gmail.com
-
-[includeIf "gitdir:~/issuu/"]
-    path = ~/issuu/.gitconfig
+	email = v.halkin@pm.me
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5/GR/dYtxwDJV22TgRUUaoc4qjAeSCarTgCqlXiG8D
 
 [push]
     default = simple
@@ -41,3 +48,11 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
