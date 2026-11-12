@@ -43,6 +43,11 @@ LSP_SERVERS=(
   "rust-analyzer|rust-analyzer --version|rustup component add rust-analyzer"
 )
 
+# name|git URL (third-party skills, cloned into ~/.claude/skills)
+SKILLS=(
+  "ex-ussr-kinship-research|https://github.com/DenisSergeevitch/ex-ussr-kinship-research"
+)
+
 export PATH="${HOME}/.local/bin:${HOME}/.cargo/bin:${PATH}"
 
 header "🤖 Claude Code CLI"
@@ -103,6 +108,18 @@ else
   fi
   rm -f "$MERGED"
 fi
+
+header "🧩 Skills"
+for entry in "${SKILLS[@]}"; do
+  name="${entry%%|*}"; url="${entry#*|}"; dir="${HOME}/.claude/skills/${name}"
+  if [ -d "$dir" ]; then
+    PRESENT+=("skill: $name"); success "$name already present"
+  elif command -v git &>/dev/null && mkdir -p "${HOME}/.claude/skills" && git clone -q --depth 1 "$url" "$dir"; then
+    INSTALLED+=("skill: $name"); success "$name cloned"
+  else
+    FAILED+=("skill: $name"); warning "failed to clone $name"
+  fi
+done
 
 header "🧠 Language servers"
 for entry in "${LSP_SERVERS[@]}"; do

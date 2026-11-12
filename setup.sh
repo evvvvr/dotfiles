@@ -44,6 +44,9 @@ header "📦 CLI tools"
 brew bundle --file "${HOME}/dotfiles/Brewfile"
 success "Homebrew packages installed"
 
+header "🔗 Linking config files (stow)"
+bash "${HOME}/dotfiles/scripts/link.sh"
+
 header "⚙️ Languages & runtimes"
 if command -v rustup &>/dev/null; then
   success "Rust already installed"
@@ -53,8 +56,8 @@ else
 fi
 uv python install
 success "Python installed"
-"${BREW_PREFIX}/bin/mise" use --global node@lts
-success "Node.js LTS installed"
+"${BREW_PREFIX}/bin/mise" install  # tools from the stowed ~/.config/mise/config.toml
+success "mise tools installed (Node.js per config.toml)"
 
 header "🤖 Claude Code (CLI, plugins, language servers)"
 bash "${HOME}/dotfiles/scripts/claude-bootstrap.sh" || warning "Claude bootstrap reported failures (re-run scripts/claude-bootstrap.sh)"
@@ -62,9 +65,6 @@ bash "${HOME}/dotfiles/scripts/claude-bootstrap.sh" || warning "Claude bootstrap
 header "🗄️ Database tools"
 uv tool install harlequin
 success "harlequin installed"
-
-header "🔗 Linking config files (stow)"
-bash "${HOME}/dotfiles/scripts/link.sh"
 
 header "🍎 macOS settings"
 "${HOME}/dotfiles/macos.sh"

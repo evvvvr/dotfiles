@@ -1,0 +1,62 @@
+// Auto-generated; do not edit manually.
+// Change the `colors` setting in GitSavvy.sublime-settings instead.
+{
+    "variables": {},
+    "globals": {},
+    "rules": [
+        {
+            "name": "GitSavvy Multiselect Marker",
+            "scope": "git_savvy.diff.multiselect",
+            "background": "#0af",
+            "foreground": "#0af1"
+        },
+        {
+            "name": "GitSavvy Multiselect Marker",
+            "scope": "git_savvy.commit.multiselect",
+            "background": "#0af",
+            "foreground": "#0af1"
+        },
+        {
+            "name": "GitSavvy Highlighted Commit Dot",
+            "scope": "git_savvy.graph.dot",
+            "background": "#991",
+            "foreground": "#9911"
+        },
+        {
+            "name": "GitSavvy Highlighted Path Char",
+            "scope": "git_savvy.graph.path_char",
+            "background": "#99991109",
+            "foreground": "#991"
+        },
+        {
+            "name": "GitSavvy Highlighted Commit Dot Above",
+            "scope": "git_savvy.graph.dot.above",
+            "background": "#99991109",
+            "foreground": "#f91d"
+        },
+        {
+            "name": "GitSavvy Highlighted Path Char Above",
+            "scope": "git_savvy.graph.path_char.above",
+            "background": "#99991109",
+            "foreground": "#19d"
+        },
+        {
+            "name": "GitSavvy Highlighted Matching Commit",
+            "scope": "git_savvy.graph.matching_commit",
+            "background": "#199",
+            "foreground": "#1991"
+        },
+        {
+            "name": "GitSavvy Multiselect Marker",
+            "scope": "git_savvy.graph.multiselect",
+            "background": "#0aa",
+            "foreground": "#0aa1"
+        },
+        {
+            "name": "GitSavvy Multiselect Marker",
+            "scope": "git_savvy.dashboard.multiselect",
+            "background": "#0af",
+            "foreground": "#0af1"
+        }
+    ]
+}

@@ -33,16 +33,14 @@ Run one command:
 `bootstrap.sh` installs Homebrew (which also installs the Xcode Command Line Tools if missing), downloads this repo to `~/dotfiles` as a tarball (no git needed), turns it into a git checkout tracking `origin/main`, and runs `dotfiles.sh setup`. Use the `bash -c "$(curl ...)"` form rather than `curl | bash`, because the Homebrew installer needs the terminal for its prompts. It is safe to re-run.
 
 Setup then:
-- Check for Xcode Command Line Tools and prompt to install if missing
-- Install all packages and apps via Homebrew
-- Install Rust toolchain via `rustup`
-- Install latest Python via `uv`
-- Install Node.js LTS via `mise`
-- Install the Claude CLI, plugins and language servers (`scripts/claude-bootstrap.sh`, see [Claude Code](#claude-code))
-- Install `harlequin` via `uv tool`
-- Symlink all config files with GNU Stow (`scripts/link.sh`) and load the daily auto-upgrade launchd agent
-- Apply macOS system preferences
-- Generate an SSH key and copy the public key to clipboard
+- Checks for Xcode Command Line Tools and prompts to install if missing
+- Installs all packages and apps via Homebrew
+- Symlinks all config files with GNU Stow (`scripts/link.sh`), loads the daily auto-upgrade launchd agent and restores `~/.aws/config` from 1Password if available
+- Installs the Rust toolchain via `rustup`, Python via `uv`, and the tools in the stowed mise config (Node.js) via `mise install`
+- Installs the Claude CLI, plugins, skills and language servers (`scripts/claude-bootstrap.sh`, see [Claude Code](#claude-code))
+- Installs `harlequin` via `uv tool`
+- Applies macOS system preferences
+- Generates an SSH key and copies the public key to the clipboard
 
 To skip SSH key generation (e.g. you're restoring an existing key), pass the flag through:
 ```sh
@@ -87,8 +85,12 @@ Auto-syncs VS Code extensions in the Brewfile, shows any brew packages installed
 
 `scripts/claude-bootstrap.sh` (idempotent, safe to re-run) installs the Claude CLI with the official installer if missing, adds the marketplaces, installs only the missing plugins from `scripts/claude-plugins.json`, installs the language servers the LSP plugins need (`typescript-language-server`, `pyright`, `rust-analyzer`), and merges `claude-plugins.json` into `~/.claude/settings.json` (a timestamped backup is written first; existing settings are preserved). The global `~/.claude/CLAUDE.md` is stowed from `claude/.claude/CLAUDE.md`.
 
-To add a plugin, add it to `enabledPlugins` (and its marketplace to `extraKnownMarketplaces` if new) in `scripts/claude-plugins.json`, then run the script. Plugin updates are handled by the daily auto-upgrade job. After installs or updates, restart Claude Code to apply them.
+To add a plugin, add it to `enabledPlugins` (and its marketplace to `extraKnownMarketplaces` if new) in `scripts/claude-plugins.json`, then run the script. Third-party skills listed in `SKILLS` in the script (currently `ex-ussr-kinship-research`) are cloned into `~/.claude/skills`. Plugins and those skills are updated by the daily auto-upgrade job. After installs or updates, restart Claude Code to apply them.
+
+## Private config (1Password)
+
+`~/.aws/config` is not stored in this public repo, since it names profiles, accounts and SSO URLs. `scripts/restore-aws-config.sh` (called from `scripts/link.sh`) restores it from the 1Password secure note `op://Personal/aws-config/notesPlain` using the 1Password CLI (`op`). It skips quietly when `op` is missing or locked, backs up a different existing file instead of overwriting it, and never touches credentials. On a new machine, enable Settings > Developer > "Integrate with 1Password CLI" in the app, then re-run `scripts/link.sh`.
 
 ## Layout (GNU Stow)
 
-Each top-level config folder (`bash`, `zsh`, `git`, `starship`, `ghostty`, `vscode`, `sublime-text`, `claude`, `launchd`) is a stow package whose contents mirror `$HOME`, e.g. `starship/.config/starship.toml` -> `~/.config/starship.toml`. `scripts/link.sh` runs `stow --no-folding` so only individual files are linked (never whole directories like `~/.claude`). Files that must not be linked (the git helper script, Sublime's `Package Control.sublime-settings`) are listed in each package's `.stow-local-ignore` and handled by `link.sh` directly.
+Each top-level config folder (`bash`, `zsh`, `git`, `starship`, `ghostty`, `vscode`, `sublime-text`, `claude`, `launchd`, `mise`, `btop`, `television`) is a stow package whose contents mirror `$HOME`, e.g. `starship/.config/starship.toml` -> `~/.config/starship.toml`. `scripts/link.sh` runs `stow --no-folding` so only individual files are linked (never whole directories like `~/.claude`). Files that must not be linked (the git helper script, Sublime's `Package Control.sublime-settings`) are listed in each package's `.stow-local-ignore` and handled by `link.sh` directly.

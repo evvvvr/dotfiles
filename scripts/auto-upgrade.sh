@@ -48,6 +48,10 @@ if command -v claude &>/dev/null && command -v jq &>/dev/null; then
   run "claude plugins" bash -c 'for p in $(claude plugin list --json | jq -r ".[].id"); do claude plugin update "$p" || exit 1; done'
 fi
 
+for d in "${HOME}"/.claude/skills/*/.git; do
+  [ -d "$d" ] && run "claude skills ($(basename "$(dirname "$d")"))" git -C "$(dirname "$d")" pull --ff-only --quiet
+done
+
 {
   echo "time=$(date +%s)"
   echo "failed=${FAILED[*]:-}"

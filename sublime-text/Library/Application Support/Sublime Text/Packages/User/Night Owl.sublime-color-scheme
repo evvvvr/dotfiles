@@ -1,0 +1,852 @@
+{
+    "name": "Night Owl",
+    "author": "Sarah Drasner (ported from VS Code)",
+    "variables": {},
+    "globals": {
+        "background": "#011627",
+        "foreground": "#d6deeb",
+        "caret": "#80a4c2",
+        "line_highlight": "#28707d29",
+        "selection": "#1d3b53",
+        "selection_border": "#1d3b53",
+        "selection_highlight": "#5f7e9779",
+        "inactive_selection": "#7e57c25a",
+        "find_highlight": "#5f7e9779",
+        "find_highlight_foreground": "#ffffff",
+        "gutter": "#011627",
+        "gutter_foreground": "#4b6479",
+        "gutter_foreground_highlight": "#C5E4FD",
+        "guide": "#5e81ce52",
+        "active_guide": "#7E97AC",
+        "stack_guide": "#5e81ce52",
+        "rulers": "#5e81ce52",
+        "brackets_options": "underline",
+        "brackets_foreground": "#7fdbca",
+        "line_diff_added": "#9CCC65",
+        "line_diff_modified": "#e2b93d",
+        "line_diff_deleted": "#EF5350",
+        "shadow": "#010b14"
+    },
+    "rules": [
+        {
+            "name": "Comment",
+            "scope": "comment, punctuation.definition.comment",
+            "foreground": "#637777",
+            "font_style": "italic"
+        },
+        {
+            "name": "String",
+            "scope": "string",
+            "foreground": "#ecc48d"
+        },
+        {
+            "name": "String Quoted",
+            "scope": "string.quoted, variable.other.readwrite.js",
+            "foreground": "#ecc48d"
+        },
+        {
+            "name": "Support Constant Math",
+            "scope": "support.constant.math",
+            "foreground": "#c5e478"
+        },
+        {
+            "name": "Number",
+            "scope": "constant.numeric, constant.character.numeric",
+            "foreground": "#F78C6C",
+            "font_style": ""
+        },
+        {
+            "name": "Built-in constant",
+            "scope": "constant.language, punctuation.definition.constant, variable.other.constant",
+            "foreground": "#82AAFF"
+        },
+        {
+            "name": "User-defined constant",
+            "scope": "constant.character, constant.other",
+            "foreground": "#82AAFF"
+        },
+        {
+            "name": "Constant Character Escape",
+            "scope": "constant.character.escape",
+            "foreground": "#F78C6C"
+        },
+        {
+            "name": "RegExp String",
+            "scope": "string.regexp, string.regexp keyword.other",
+            "foreground": "#5ca7e4"
+        },
+        {
+            "name": "Comma in functions",
+            "scope": "meta.function punctuation.separator.comma",
+            "foreground": "#5f7e97"
+        },
+        {
+            "name": "Variable",
+            "scope": "variable",
+            "foreground": "#c5e478"
+        },
+        {
+            "name": "Keyword",
+            "scope": "punctuation.accessor, keyword",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Storage",
+            "scope": "storage, meta.var.expr, meta.class meta.method.declaration meta.var.expr storage.type.js, storage.type.property.js, storage.type.property.ts, storage.type.property.tsx",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Storage type",
+            "scope": "storage.type",
+            "foreground": "#c792ea"
+        },
+        {
+            "name": "Storage type arrow",
+            "scope": "storage.type.function.arrow.js",
+            "font_style": ""
+        },
+        {
+            "name": "Class name",
+            "scope": "entity.name.class, meta.class entity.name.type.class",
+            "foreground": "#ffcb8b"
+        },
+        {
+            "name": "Inherited class",
+            "scope": "entity.other.inherited-class",
+            "foreground": "#c5e478"
+        },
+        {
+            "name": "Function name",
+            "scope": "entity.name.function",
+            "foreground": "#82AAFF",
+            "font_style": "italic"
+        },
+        {
+            "name": "Meta Tag",
+            "scope": "punctuation.definition.tag, meta.tag",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "HTML Tag names",
+            "scope": "entity.name.tag, meta.tag.other.html, meta.tag.other.js, meta.tag.other.tsx, entity.name.tag.tsx, entity.name.tag.js, meta.tag.js, meta.tag.tsx, meta.tag.html",
+            "foreground": "#caece6",
+            "font_style": ""
+        },
+        {
+            "name": "Tag attribute",
+            "scope": "entity.other.attribute-name",
+            "foreground": "#c5e478",
+            "font_style": "italic"
+        },
+        {
+            "name": "Entity Name Tag Custom",
+            "scope": "entity.name.tag.custom",
+            "foreground": "#f78c6c"
+        },
+        {
+            "name": "Library (function & constant)",
+            "scope": "support.function, support.constant",
+            "foreground": "#82AAFF"
+        },
+        {
+            "name": "Support Constant Property Value meta",
+            "scope": "support.constant.meta.property-value",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "Library class/type",
+            "scope": "support.type, support.class",
+            "foreground": "#c5e478"
+        },
+        {
+            "name": "Support Variable DOM",
+            "scope": "support.variable.dom",
+            "foreground": "#c5e478"
+        },
+        {
+            "name": "Invalid",
+            "scope": "invalid",
+            "foreground": "#ffffff",
+            "background": "#ff2c83"
+        },
+        {
+            "name": "Invalid deprecated",
+            "scope": "invalid.deprecated",
+            "foreground": "#ffffff",
+            "background": "#d3423e"
+        },
+        {
+            "name": "Keyword Operator",
+            "scope": "keyword.operator",
+            "foreground": "#7fdbca",
+            "font_style": ""
+        },
+        {
+            "name": "Keyword Operator Relational",
+            "scope": "keyword.operator.relational",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Keyword Operator Assignment",
+            "scope": "keyword.operator.assignment",
+            "foreground": "#c792ea"
+        },
+        {
+            "name": "Keyword Operator Arithmetic",
+            "scope": "keyword.operator.arithmetic",
+            "foreground": "#c792ea"
+        },
+        {
+            "name": "Keyword Operator Bitwise",
+            "scope": "keyword.operator.bitwise",
+            "foreground": "#c792ea"
+        },
+        {
+            "name": "Keyword Operator Increment",
+            "scope": "keyword.operator.increment",
+            "foreground": "#c792ea"
+        },
+        {
+            "name": "Keyword Operator Ternary",
+            "scope": "keyword.operator.ternary",
+            "foreground": "#c792ea"
+        },
+        {
+            "name": "Double-Slashed Comment",
+            "scope": "comment.line.double-slash",
+            "foreground": "#637777"
+        },
+        {
+            "name": "Object",
+            "scope": "object",
+            "foreground": "#cdebf7"
+        },
+        {
+            "name": "Null",
+            "scope": "constant.language.null",
+            "foreground": "#ff5874"
+        },
+        {
+            "name": "Meta Brace",
+            "scope": "meta.brace",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "Meta Delimiter Period",
+            "scope": "meta.delimiter.period",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Punctuation Definition String",
+            "scope": "punctuation.definition.string",
+            "foreground": "#d9f5dd"
+        },
+        {
+            "name": "Punctuation Definition String Markdown",
+            "scope": "punctuation.definition.string.begin.markdown",
+            "foreground": "#ff5874"
+        },
+        {
+            "name": "Boolean",
+            "scope": "constant.language.boolean",
+            "foreground": "#ff5874"
+        },
+        {
+            "name": "Object Comma",
+            "scope": "object.comma",
+            "foreground": "#ffffff"
+        },
+        {
+            "name": "Variable Parameter Function",
+            "scope": "variable.parameter.function",
+            "foreground": "#7fdbca",
+            "font_style": ""
+        },
+        {
+            "name": "Support Type Property Name & entity name tags",
+            "scope": "support.type.vendor.property-name, support.constant.vendor.property-value, support.type.property-name, meta.property-list entity.name.tag",
+            "foreground": "#80CBC4",
+            "font_style": ""
+        },
+        {
+            "name": "Entity Name tag reference in stylesheets",
+            "scope": "meta.property-list entity.name.tag.reference",
+            "foreground": "#57eaf1"
+        },
+        {
+            "name": "Constant Other Color RGB Value Punctuation",
+            "scope": "constant.other.color.rgb-value punctuation.definition.constant",
+            "foreground": "#F78C6C"
+        },
+        {
+            "name": "Constant Other Color",
+            "scope": "constant.other.color",
+            "foreground": "#FFEB95"
+        },
+        {
+            "name": "Keyword Other Unit",
+            "scope": "keyword.other.unit",
+            "foreground": "#FFEB95"
+        },
+        {
+            "name": "Meta Selector",
+            "scope": "meta.selector",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Entity Other Attribute Name Id",
+            "scope": "entity.other.attribute-name.id",
+            "foreground": "#FAD430"
+        },
+        {
+            "name": "Meta Property Name",
+            "scope": "meta.property-name",
+            "foreground": "#80CBC4"
+        },
+        {
+            "name": "Doctypes",
+            "scope": "entity.name.tag.doctype, meta.tag.sgml.doctype",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Punctuation Definition Parameters",
+            "scope": "punctuation.definition.parameters",
+            "foreground": "#d9f5dd"
+        },
+        {
+            "name": "Keyword Control Operator",
+            "scope": "keyword.control.operator",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "Keyword Operator Logical",
+            "scope": "keyword.operator.logical",
+            "foreground": "#c792ea",
+            "font_style": ""
+        },
+        {
+            "name": "Variable Instances",
+            "scope": "variable.instance, variable.other.instance, variable.readwrite.instance, variable.other.readwrite.instance, variable.other.property",
+            "foreground": "#baebe2"
+        },
+        {
+            "name": "Variable Property Other object property",
+            "scope": "variable.other.object.property",
+            "foreground": "#faf39f",
+            "font_style": "italic"
+        },
+        {
+            "name": "This Keyword JS",
+            "scope": "variable.language.this.js",
+            "foreground": "#41eec6",
+            "font_style": "italic"
+        },
+        {
+            "name": "Keyword Operator Comparison and control flow",
+            "scope": "keyword.operator.comparison, keyword.control.flow.js, keyword.control.flow.ts, keyword.control.flow.tsx, keyword.control.ruby, keyword.control.module.ruby, keyword.control.class.ruby, keyword.control.def.ruby, keyword.control.loop.js, keyword.control.loop.ts, keyword.control.import.js, keyword.control.import.ts, keyword.control.import.tsx, keyword.control.from.js, keyword.control.from.ts, keyword.control.from.tsx, keyword.operator.instanceof.js, keyword.operator.expression.instanceof.ts, keyword.operator.expression.instanceof.tsx",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Keyword Control Conditional",
+            "scope": "keyword.control.conditional.js, keyword.control.conditional.ts, keyword.control.switch.js, keyword.control.switch.ts",
+            "foreground": "#c792ea",
+            "font_style": ""
+        },
+        {
+            "name": "Support Constant new keyword and control",
+            "scope": "support.constant, keyword.other.special-method, keyword.other.new, keyword.other.debugger, keyword.control",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "Support Function",
+            "scope": "support.function",
+            "foreground": "#c5e478"
+        },
+        {
+            "name": "Invalid Broken",
+            "scope": "invalid.broken",
+            "foreground": "#020e14",
+            "background": "#F78C6C"
+        },
+        {
+            "name": "Invalid Unimplemented",
+            "scope": "invalid.unimplemented",
+            "foreground": "#ffffff",
+            "background": "#8BD649"
+        },
+        {
+            "name": "Invalid Illegal",
+            "scope": "invalid.illegal",
+            "foreground": "#ffffff",
+            "background": "#ec5f67"
+        },
+        {
+            "name": "Language Variable",
+            "scope": "variable.language",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "Support Variable Property",
+            "scope": "support.variable.property",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "Variable Function",
+            "scope": "variable.function",
+            "foreground": "#82AAFF"
+        },
+        {
+            "name": "Variable Interpolation",
+            "scope": "variable.interpolation",
+            "foreground": "#ec5f67"
+        },
+        {
+            "name": "Meta Function Call",
+            "scope": "meta.function-call",
+            "foreground": "#82AAFF"
+        },
+        {
+            "name": "Punctuation Section Embedded",
+            "scope": "punctuation.section.embedded",
+            "foreground": "#d3423e"
+        },
+        {
+            "name": "Punctuation Tweaks",
+            "scope": "punctuation.terminator.expression, punctuation.definition.arguments, punctuation.definition.array, punctuation.section.array, meta.array",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "More Punctuation Tweaks",
+            "scope": "punctuation.definition.list.begin, punctuation.definition.list.end, punctuation.separator.arguments, punctuation.definition.list",
+            "foreground": "#d9f5dd"
+        },
+        {
+            "name": "Template Strings",
+            "scope": "string.template meta.template.expression",
+            "foreground": "#d3423e"
+        },
+        {
+            "name": "Backticks in Template Strings",
+            "scope": "string.template punctuation.definition.string",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "Italics",
+            "scope": "italic",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Bold",
+            "scope": "bold",
+            "foreground": "#c5e478",
+            "font_style": "bold"
+        },
+        {
+            "name": "Quote",
+            "scope": "quote",
+            "foreground": "#697098",
+            "font_style": "italic"
+        },
+        {
+            "name": "Raw Code",
+            "scope": "raw",
+            "foreground": "#80CBC4"
+        },
+        {
+            "name": "Changed",
+            "scope": "markup.changed, meta.diff.header.git, meta.diff.header.from-file, meta.diff.header.to-file",
+            "foreground": "#a2bffc",
+            "font_style": "italic"
+        },
+        {
+            "name": "Deleted",
+            "scope": "markup.deleted.diff",
+            "foreground": "#EF535090",
+            "font_style": "italic"
+        },
+        {
+            "name": "Inserted",
+            "scope": "markup.inserted.diff",
+            "foreground": "#c5e478ff",
+            "font_style": "italic"
+        },
+        {
+            "name": "Markdown Headings",
+            "scope": "markup.heading, markup.heading.setext.1, markup.heading.setext.2",
+            "foreground": "#82b1ff"
+        },
+        {
+            "name": "Markdown Italics",
+            "scope": "markup.italic",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Markdown Bold",
+            "scope": "markup.bold",
+            "foreground": "#c5e478",
+            "font_style": "bold"
+        },
+        {
+            "name": "Markdown Quote",
+            "scope": "markup.quote",
+            "foreground": "#697098",
+            "font_style": "italic"
+        },
+        {
+            "name": "Markdown Raw Code",
+            "scope": "markup.inline.raw",
+            "foreground": "#80CBC4"
+        },
+        {
+            "name": "Markdown Links",
+            "scope": "markup.underline.link, markup.underline.link.image",
+            "foreground": "#ff869a"
+        },
+        {
+            "name": "Markdown Link Title and Description",
+            "scope": "string.other.link.title.markdown, string.other.link.description.markdown",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "Markdown Punctuation",
+            "scope": "punctuation.definition.string.markdown, punctuation.definition.string.begin.markdown, punctuation.definition.string.end.markdown, meta.link.inline.markdown punctuation.definition.string",
+            "foreground": "#82b1ff"
+        },
+        {
+            "name": "Markdown MetaData Punctuation",
+            "scope": "punctuation.definition.metadata.markdown",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "Markdown List Punctuation",
+            "scope": "beginning.punctuation.definition.list.markdown",
+            "foreground": "#82b1ff"
+        },
+        {
+            "name": "Markdown Inline Raw String",
+            "scope": "markup.inline.raw.string.markdown",
+            "foreground": "#c5e478"
+        },
+        {
+            "name": "JSON Property Names",
+            "scope": "support.type.property-name.json",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "JSON Support Constants",
+            "scope": "support.constant.json",
+            "foreground": "#c5e478"
+        },
+        {
+            "name": "JSON Property values (string)",
+            "scope": "meta.structure.dictionary.value.json string.quoted.double",
+            "foreground": "#c789d6"
+        },
+        {
+            "name": "Strings in JSON values",
+            "scope": "string.quoted.double.json punctuation.definition.string.json",
+            "foreground": "#80CBC4"
+        },
+        {
+            "name": "Specific JSON Property values like null",
+            "scope": "meta.structure.dictionary.json meta.structure.dictionary.value constant.language",
+            "foreground": "#ff5874"
+        },
+        {
+            "name": "JavaScript Other Variable",
+            "scope": "variable.other.object.js",
+            "foreground": "#7fdbca",
+            "font_style": "italic"
+        },
+        {
+            "name": "JavaScript Variable Parameter Function",
+            "scope": "variable.parameter.function.js",
+            "foreground": "#7986E7"
+        },
+        {
+            "name": "JavaScript[React] Variable Other Object",
+            "scope": "variable.other.object.js, variable.other.object.jsx, variable.object.property.js, variable.object.property.jsx",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "JavaScript Variables",
+            "scope": "variable.js, variable.other.js",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "JavaScript Entity Name Type",
+            "scope": "entity.name.type.js, entity.name.type.module.js",
+            "foreground": "#ffcb8b",
+            "font_style": ""
+        },
+        {
+            "name": "JavaScript Support Classes",
+            "scope": "support.class.js",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "JavaScript Classes",
+            "scope": "meta.class entity.name.type.class.js",
+            "foreground": "#ffcb8b"
+        },
+        {
+            "name": "JavaScript Method Declaration",
+            "scope": "meta.method.declaration storage.type.js",
+            "foreground": "#82AAFF"
+        },
+        {
+            "name": "JavaScript module imports and exports",
+            "scope": "variable.other.meta.import.js, meta.import.js variable.other, variable.other.meta.export.js, meta.export.js variable.other",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "Support Class Component",
+            "scope": "support.class.component.js, support.class.component.tsx",
+            "foreground": "#f78c6c",
+            "font_style": ""
+        },
+        {
+            "name": "Text nested in React tags",
+            "scope": "meta.jsx.children, meta.jsx.children.js, meta.jsx.children.tsx",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "TypeScript[React] Variables and Object Properties",
+            "scope": "variable.other.readwrite.alias.ts, variable.other.readwrite.alias.tsx, variable.other.readwrite.ts, variable.other.readwrite.tsx, variable.other.object.ts, variable.other.object.tsx, variable.object.property.ts, variable.object.property.tsx, variable.other.ts, variable.other.tsx, variable.tsx, variable.ts",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "TypeScript[React] Entity Name Types",
+            "scope": "entity.name.type.ts, entity.name.type.tsx",
+            "foreground": "#ffcb8b"
+        },
+        {
+            "name": "TypeScript[React] Node Classes",
+            "scope": "support.class.node.ts, support.class.node.tsx",
+            "foreground": "#82AAFF"
+        },
+        {
+            "name": "TypeScript[React] Entity Name Types as Parameters",
+            "scope": "meta.type.parameters.ts entity.name.type, meta.type.parameters.tsx entity.name.type",
+            "foreground": "#5f7e97"
+        },
+        {
+            "name": "TypeScript[React] Import/Export Punctuations",
+            "scope": "meta.import.ts punctuation.definition.block, meta.import.tsx punctuation.definition.block, meta.export.ts punctuation.definition.block, meta.export.tsx punctuation.definition.block",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "TypeScript[React] Punctuation Decorators",
+            "scope": "meta.decorator punctuation.decorator.ts, meta.decorator punctuation.decorator.tsx",
+            "foreground": "#82AAFF"
+        },
+        {
+            "name": "TypeScript Classes",
+            "scope": "meta.class entity.name.type.class.tsx",
+            "foreground": "#ffcb8b"
+        },
+        {
+            "name": "TypeScript Entity Name Type",
+            "scope": "entity.name.type.tsx, entity.name.type.module.tsx",
+            "foreground": "#ffcb8b"
+        },
+        {
+            "name": "TypeScript Class Variable Keyword",
+            "scope": "meta.class.ts meta.var.expr.ts storage.type.ts, meta.class.tsx meta.var.expr.tsx storage.type.tsx",
+            "foreground": "#C792EA"
+        },
+        {
+            "name": "TypeScript Method Declaration",
+            "scope": "meta.method.declaration storage.type.ts, meta.method.declaration storage.type.tsx",
+            "foreground": "#82AAFF"
+        },
+        {
+            "name": "Go Function Calls",
+            "scope": "source.go meta.function-call.go",
+            "foreground": "#DDDDDD"
+        },
+        {
+            "name": "Go Keywords",
+            "scope": "source.go keyword.package.go, source.go keyword.import.go, source.go keyword.function.go, source.go keyword.type.go, source.go keyword.struct.go, source.go keyword.interface.go, source.go keyword.const.go, source.go keyword.var.go, source.go keyword.map.go, source.go keyword.channel.go, source.go keyword.control.go",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Go Constants",
+            "scope": "source.go constant.language.go, source.go constant.other.placeholder.go",
+            "foreground": "#ff5874"
+        },
+        {
+            "name": "Python import control keyword",
+            "scope": "keyword.control",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Language Constants in Python",
+            "scope": "constant.language.python",
+            "foreground": "#ff5874"
+        },
+        {
+            "name": "Python Function Parameter and Arguments",
+            "scope": "variable.parameter.function.python, meta.function-call.arguments.python",
+            "foreground": "#82AAFF"
+        },
+        {
+            "name": "Python Function Call",
+            "scope": "meta.function-call.python, meta.function-call.generic.python",
+            "foreground": "#B2CCD6"
+        },
+        {
+            "name": "Decorator Functions in Python",
+            "scope": "entity.name.function.decorator.python",
+            "foreground": "#c5e478"
+        },
+        {
+            "name": "Python Language Variable",
+            "scope": "source.python variable.language.special",
+            "foreground": "#8EACE3"
+        },
+        {
+            "name": "Ruby Variables",
+            "scope": "variable.other.ruby",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "Ruby Class",
+            "scope": "entity.name.type.class.ruby",
+            "foreground": "#ecc48d"
+        },
+        {
+            "name": "Ruby Hashkeys",
+            "scope": "constant.language.symbol.hashkey.ruby",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "Ruby Symbols",
+            "scope": "constant.language.symbol.ruby",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "C++ Functions",
+            "scope": "entity.name.function.preprocessor.cpp, entity.scope.name.cpp",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "C++ Meta Namespace",
+            "scope": "meta.namespace-block.cpp",
+            "foreground": "#e0dec6"
+        },
+        {
+            "name": "C++ Language Primitive Storage",
+            "scope": "storage.type.language.primitive.cpp",
+            "foreground": "#ff5874"
+        },
+        {
+            "name": "C++ Preprocessor Macro",
+            "scope": "meta.preprocessor.macro.cpp",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "C++ Variable Parameter",
+            "scope": "variable.parameter",
+            "foreground": "#ffcb8b"
+        },
+        {
+            "name": "C# Readwrite Variables",
+            "scope": "variable.other.readwrite.cs",
+            "foreground": "#d6deeb"
+        },
+        {
+            "name": "C# Classes & Storage types",
+            "scope": "entity.name.type.class.cs, storage.type.cs",
+            "foreground": "#ffcb8b"
+        },
+        {
+            "name": "C# Namespaces",
+            "scope": "entity.name.type.namespace.cs",
+            "foreground": "#B2CCD6"
+        },
+        {
+            "name": "Tag names in Stylesheets",
+            "scope": "entity.name.tag.css, entity.name.tag.less, entity.name.tag.custom.css, support.constant.property-value.css",
+            "foreground": "#ff6363",
+            "font_style": ""
+        },
+        {
+            "name": "Wildcard selector in Stylesheets",
+            "scope": "entity.name.tag.wildcard.css, entity.name.tag.wildcard.less, entity.name.tag.wildcard.scss, entity.name.tag.wildcard.sass",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "CSS Keyword Other Unit",
+            "scope": "keyword.other.unit.css",
+            "foreground": "#FFEB95"
+        },
+        {
+            "name": "Attribute Name for CSS",
+            "scope": "meta.attribute-selector.css entity.other.attribute-name.attribute",
+            "foreground": "#F78C6C"
+        },
+        {
+            "name": "SCSS Variable",
+            "scope": "variable.scss, variable.sass, variable.parameter.url.scss, variable.parameter.url.sass",
+            "foreground": "#c5e478"
+        },
+        {
+            "name": "Tag names in SASS",
+            "scope": "entity.name.tag.scss, entity.name.tag.sass",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "SASS Keyword Other Unit",
+            "scope": "keyword.other.unit.scss, keyword.other.unit.sass",
+            "foreground": "#FFEB95"
+        },
+        {
+            "name": "YAML Entity Name Tags",
+            "scope": "entity.name.tag.yaml",
+            "foreground": "#7fdbca"
+        },
+        {
+            "name": "HTML Punctuation Definition Tag",
+            "scope": "punctuation.definition.tag.html",
+            "foreground": "#6ae9f0"
+        },
+        {
+            "name": "HTML Doctype",
+            "scope": "meta.tag.sgml.doctype.html",
+            "foreground": "#c792ea",
+            "font_style": "italic"
+        },
+        {
+            "name": "Textmate Deleted",
+            "scope": "markup.deleted",
+            "foreground": "#ff0000"
+        },
+        {
+            "name": "Textmate Inserted",
+            "scope": "markup.inserted",
+            "foreground": "#036A07"
+        },
+        {
+            "name": "Textmate Underline",
+            "scope": "markup.underline",
+            "font_style": "underline"
+        },
+        {
+            "name": "Normalize font style",
+            "scope": "meta.property-list.css meta.property-value.css variable.other.less, meta.property-list.scss variable.scss, meta.property-list.sass variable.sass, meta.brace, keyword.operator.operator, keyword.operator.or.regexp, keyword.operator.expression.in, keyword.operator.relational, keyword.operator.assignment, keyword.operator.comparison, keyword.operator.type, keyword.operator, keyword, punctuation, variable.other.readwrite.js, storage.type, source.css, string.quoted",
+            "font_style": ""
+        }
+    ]
+}
