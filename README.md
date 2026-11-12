@@ -36,7 +36,7 @@ Setup then:
 - Checks for Xcode Command Line Tools and prompts to install if missing
 - Installs all packages and apps via Homebrew
 - Symlinks all config files with GNU Stow (`scripts/link.sh`), loads the daily auto-upgrade launchd agent and restores `~/.aws/config` from 1Password if available
-- Installs the Rust toolchain via `rustup`, Python via `uv`, and the tools in the stowed mise config (Node.js) via `mise install`
+- Installs the Rust toolchain via `rustup`, Python via `uv`, and the tools in the stowed mise config (Node.js, tflint) via `mise install`
 - Installs the Claude CLI, plugins, skills and language servers (`scripts/claude-bootstrap.sh`, see [Claude Code](#claude-code))
 - Installs `harlequin` via `uv tool`
 - Applies macOS system preferences
@@ -90,6 +90,10 @@ To add a plugin, add it to `enabledPlugins` (and its marketplace to `extraKnownM
 ## Private config (1Password)
 
 `~/.aws/config` is not stored in this public repo, since it names profiles, accounts and SSO URLs. `scripts/restore-aws-config.sh` (called from `scripts/link.sh`) restores it from the 1Password secure note `op://Personal/aws-config/notesPlain` using the 1Password CLI (`op`). It skips quietly when `op` is missing or locked, backs up a different existing file instead of overwriting it, and never touches credentials. On a new machine, enable Settings > Developer > "Integrate with 1Password CLI" in the app, then re-run `scripts/link.sh`.
+
+## Linting
+
+The Brewfile installs `shellcheck`, `shfmt`, `hadolint`, `actionlint`, `kubeconform`, `kube-linter` and `ruff`; `tflint` comes from the mise config. `shellcheck` does not support zsh, so check zsh files with `zsh -n <file>` (syntax only). Project-level linters (eslint, prettier, ...) belong in each project, not here.
 
 ## Layout (GNU Stow)
 
