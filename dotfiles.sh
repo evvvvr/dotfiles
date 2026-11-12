@@ -19,50 +19,8 @@ header()  { echo -e "\n${BOLD}$1${RESET}"; }
 dim()     { echo -e "${DIM}  $1${RESET}"; }
 
 symlink_configs() {
-  header "🔗 Symlinking config files"
-  BREW_PREFIX="$(brew --prefix)"
-
-  ln -sf "${DOTFILES}/git/git-clean-stale-local-branches" "${BREW_PREFIX}/bin"
-  info "git helpers"
-
-  ln -sf "${DOTFILES}/git/.gitconfig" "${HOME}"
-  info ".gitconfig"
-
-  mkdir -p "${HOME}/Library/Application Support/com.mitchellh.ghostty"
-  ln -sf "${DOTFILES}/ghostty/config" "${HOME}/Library/Application Support/com.mitchellh.ghostty/config.ghostty"
-  info "Ghostty config"
-
-  ln -sf "${DOTFILES}/vscode/settings.json" "${HOME}/Library/Application Support/Code/User/settings.json"
-  info "VS Code settings"
-
-  ln -sf "${DOTFILES}/bash/.bash_profile" "${HOME}"
-  info ".bash_profile"
-
-  ln -sf "${DOTFILES}/zsh/.zshrc" "${HOME}"
-  info ".zshrc"
-
-  mkdir -p "${HOME}/.config"
-  ln -sf "${DOTFILES}/starship/starship.toml" "${HOME}/.config/starship.toml"
-  info "starship config"
-
-  SUBL_PACKAGES="${HOME}/Library/Application Support/Sublime Text/Packages"
-  ln -sf "${HOME}/projects/RustTestExplorer" "${SUBL_PACKAGES}/RustTestExplorer"
-  info "Sublime Text RustTestExplorer plugin"
-
-  SUBL_DIR="${SUBL_PACKAGES}/User"
-  mkdir -p "${SUBL_DIR}"
-  ln -sf "${DOTFILES}/sublime-text/Preferences.sublime-settings" "${SUBL_DIR}/"
-  ln -sf "${DOTFILES}/sublime-text/Terminus.sublime-settings" "${SUBL_DIR}/"
-  ln -sf "${DOTFILES}/sublime-text/Debugger.sublime-settings" "${SUBL_DIR}/"
-  ln -sf "${DOTFILES}/sublime-text/Adaptive.sublime-theme" "${SUBL_DIR}/"
-  ln -sf "${DOTFILES}/sublime-text/Side Bar.sublime-menu" "${SUBL_DIR}/"
-  rm -f "${SUBL_DIR}/Package Control.sublime-settings"
-  cp "${DOTFILES}/sublime-text/Package Control.sublime-settings" "${SUBL_DIR}/"
-  mkdir -p "${SUBL_DIR}/Terminus"
-  ln -sf "${DOTFILES}/sublime-text/Terminus/Night Owl.json" "${SUBL_DIR}/Terminus/"
-  info "Sublime Text config"
-
-  success "Config files symlinked"
+  header "🔗 Linking config files (stow)"
+  bash "${DOTFILES}/scripts/link.sh"
 }
 
 cmd_setup() {
@@ -77,7 +35,7 @@ cmd_sync() {
   symlink_configs
 
   header "🤖 Claude Code plugins"
-  bash "${DOTFILES}/claude/bootstrap-plugins.sh" || warning "Claude bootstrap reported failures"
+  bash "${DOTFILES}/scripts/claude-bootstrap.sh" || warning "Claude bootstrap reported failures"
 
   header "🍎 Applying macOS settings"
   bash "${DOTFILES}/macos.sh"
@@ -130,7 +88,7 @@ cmd_update() {
   header "  Sublime Text packages"
   SUBL_PKG="${HOME}/Library/Application Support/Sublime Text/Packages/User/Package Control.sublime-settings"
   if [ -f "$SUBL_PKG" ] && [ ! -L "$SUBL_PKG" ]; then
-    cp "$SUBL_PKG" "${DOTFILES}/sublime-text/Package Control.sublime-settings"
+    cp "$SUBL_PKG" "${DOTFILES}/sublime-text/Library/Application Support/Sublime Text/Packages/User/Package Control.sublime-settings"
     success "Package Control.sublime-settings synced to dotfiles"
   else
     warning "Sublime Text package list not found or is a symlink — skipping"

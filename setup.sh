@@ -57,50 +57,14 @@ success "Python installed"
 success "Node.js LTS installed"
 
 header "🤖 Claude Code (CLI, plugins, language servers)"
-bash "${HOME}/dotfiles/claude/bootstrap-plugins.sh" || warning "Claude bootstrap reported failures (re-run claude/bootstrap-plugins.sh)"
+bash "${HOME}/dotfiles/scripts/claude-bootstrap.sh" || warning "Claude bootstrap reported failures (re-run scripts/claude-bootstrap.sh)"
 
 header "🗄️ Database tools"
 uv tool install harlequin
 success "harlequin installed"
 
-header "🔗 Symlinking config files"
-
-ln -sf "${HOME}/dotfiles/git/git-clean-stale-local-branches" "${BREW_PREFIX}/bin"
-info "git helpers"
-
-ln -sf "${HOME}/dotfiles/git/.gitconfig" "${HOME}"
-info ".gitconfig"
-
-mkdir -p "${HOME}/Library/Application Support/com.mitchellh.ghostty"
-ln -sf "${HOME}/dotfiles/ghostty/config" "${HOME}/Library/Application Support/com.mitchellh.ghostty/config.ghostty"
-info "Ghostty config"
-
-ln -sf "${HOME}/dotfiles/vscode/settings.json" "${HOME}/Library/Application Support/Code/User/settings.json"
-info "VS Code settings"
-
-ln -sf "${HOME}/dotfiles/bash/.bash_profile" "${HOME}"
-info ".bash_profile"
-
-ln -sf "${HOME}/dotfiles/zsh/.zshrc" "${HOME}"
-info ".zshrc"
-
-mkdir -p "${HOME}/.config"
-ln -sf "${HOME}/dotfiles/starship/starship.toml" "${HOME}/.config/starship.toml"
-info "starship config"
-
-SUBL_DIR="${HOME}/Library/Application Support/Sublime Text/Packages/User"
-mkdir -p "${SUBL_DIR}"
-ln -sf "${HOME}/dotfiles/sublime-text/Preferences.sublime-settings" "${SUBL_DIR}/"
-ln -sf "${HOME}/dotfiles/sublime-text/Default (OSX).sublime-keymap" "${SUBL_DIR}/"
-ln -sf "${HOME}/dotfiles/sublime-text/Terminus.sublime-settings" "${SUBL_DIR}/"
-ln -sf "${HOME}/dotfiles/sublime-text/Debugger.sublime-settings" "${SUBL_DIR}/"
-ln -sf "${HOME}/dotfiles/sublime-text/Adaptive.sublime-theme" "${SUBL_DIR}/"
-ln -sf "${HOME}/dotfiles/sublime-text/Side Bar.sublime-menu" "${SUBL_DIR}/"
-rm -f "${SUBL_DIR}/Package Control.sublime-settings"
-cp "${HOME}/dotfiles/sublime-text/Package Control.sublime-settings" "${SUBL_DIR}/"
-mkdir -p "${SUBL_DIR}/Terminus"
-ln -sf "${HOME}/dotfiles/sublime-text/Terminus/Night Owl.json" "${SUBL_DIR}/Terminus/"
-info "Sublime Text config"
+header "🔗 Linking config files (stow)"
+bash "${HOME}/dotfiles/scripts/link.sh"
 
 header "🍎 macOS settings"
 "${HOME}/dotfiles/macos.sh"

@@ -6,8 +6,8 @@ set -uo pipefail
 
 case "${1:-}" in
   -h|--help)
-    echo "Usage: bootstrap-plugins.sh"
-    echo "Installs the Claude CLI, marketplaces and plugins from claude/plugins.json,"
+    echo "Usage: claude-bootstrap.sh"
+    echo "Installs the Claude CLI, marketplaces and plugins from scripts/claude-plugins.json,"
     echo "merges that file into ~/.claude/settings.json (with backup), and installs"
     echo "the LSP binaries. Idempotent; safe to re-run."
     exit 0 ;;
@@ -17,7 +17,7 @@ MERGED=""
 trap '[ -n "$MERGED" ] && rm -f "$MERGED"' EXIT
 
 DOTFILES="${DOTFILES:-${HOME}/dotfiles}"
-FRAGMENT="${DOTFILES}/claude/plugins.json"
+FRAGMENT="${DOTFILES}/scripts/claude-plugins.json"
 SETTINGS="${HOME}/.claude/settings.json"
 
 GREEN="\033[0;32m"; BLUE="\033[0;34m"; YELLOW="\033[0;33m"; RED="\033[0;31m"; BOLD="\033[1m"; RESET="\033[0m"
