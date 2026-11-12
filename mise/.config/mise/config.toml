@@ -1,3 +1,12 @@
 [tools]
+# Node: major pin on the current LTS line. `mise upgrade` (daily job) only moves
+# within 26.x; bump the major by hand when you want the next LTS. Do not use
+# `mise upgrade --bump`, it can cross majors.
 node = "26"
 tflint = "latest"
+
+# npm CLIs managed by mise so they survive Node upgrades (plain `npm i -g`
+# installs live inside each Node version's folder and are lost on a bump).
+"npm:typescript" = "latest"
+"npm:typescript-language-server" = "latest"
+"npm:pyright" = "latest"

@@ -36,7 +36,7 @@ Setup then:
 - Checks for Xcode Command Line Tools and prompts to install if missing
 - Installs all packages and apps via Homebrew
 - Symlinks all config files with GNU Stow (`scripts/link.sh`), loads the daily auto-upgrade launchd agent and restores `~/.aws/config` from 1Password if available
-- Installs the Rust toolchain via `rustup`, Python via `uv`, and the tools in the stowed mise config (Node.js, tflint) via `mise install`
+- Installs the Rust toolchain via `rustup`, Python via `uv`, and the tools in the stowed mise config (Node.js, tflint, typescript, typescript-language-server, pyright) via `mise install`
 - Installs the Claude CLI, plugins, skills and language servers (`scripts/claude-bootstrap.sh`, see [Claude Code](#claude-code))
 - Installs `harlequin` via `uv tool`
 - Applies macOS system preferences

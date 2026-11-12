@@ -35,11 +35,14 @@ MARKETPLACES=(
 )
 
 # name|check command (must succeed when usable)|install command
+# On machines with the stowed mise config these come from mise (npm: backend);
+# the npm -g installs are only a fallback. Checks run the binary, because a mise
+# shim can exist without a working tool behind it.
 # rust-analyzer is a rustup proxy that exists on PATH even without the component,
 # so it is checked by actually running it.
 LSP_SERVERS=(
   "typescript-language-server|typescript-language-server --version|npm install -g typescript-language-server typescript"
-  "pyright-langserver|command -v pyright-langserver|npm install -g pyright"
+  "pyright-langserver|pyright --version|npm install -g pyright"
   "rust-analyzer|rust-analyzer --version|rustup component add rust-analyzer"
 )
 
