@@ -13,7 +13,7 @@ macOS setup scripts and configuration files.
 | `claude/` | Claude Code global `CLAUDE.md` (stow package) |
 | `mise/` | Global mise config: runtimes, npm CLIs and the `dotfiles:*` tasks (stow package) |
 | `scripts/` | `sync.sh`, `update.sh`, `upgrade.sh`, `lib.sh` (behind the mise tasks), `link.sh` (stow), `auto-upgrade.sh` (daily unattended upgrades), `claude-bootstrap.sh` + `claude-plugins.json` (Claude CLI, plugins, language servers) |
-| `launchd/` | LaunchAgent that runs `auto-upgrade.sh` daily (stow package) |
+| `launchd/` | LaunchAgents: nightly `auto-upgrade.sh` and the GUI `PATH` (stow package) |
 | `ghostty/` | Ghostty terminal config |
 | `sublime-text/` | Sublime Text preferences and package list |
 | `vscode/` | VS Code settings |
@@ -100,6 +100,10 @@ mise run dotfiles:update
 `scripts/claude-bootstrap.sh` (idempotent, safe to re-run) installs the Claude CLI with the official installer if missing, adds the marketplaces, installs only the missing plugins from `scripts/claude-plugins.json`, installs the language servers the LSP plugins need (`typescript-language-server`, `pyright`, `rust-analyzer`), and merges `claude-plugins.json` into `~/.claude/settings.json` (a timestamped backup is written first; existing settings are preserved). The global `~/.claude/CLAUDE.md` is stowed from `claude/.claude/CLAUDE.md`.
 
 To add a plugin, add it to `enabledPlugins` (and its marketplace to `extraKnownMarketplaces` if new) in `scripts/claude-plugins.json`, then run the script. Third-party skills listed in `SKILLS` in the script (currently `ex-ussr-kinship-research`) are cloned into `~/.claude/skills`. Plugins and those skills are updated by the daily auto-upgrade job. After installs or updates, restart Claude Code to apply them.
+
+## GUI apps and PATH
+
+GUI apps (Sublime Text, ...) don't read `.zshrc`, so they can't see Node from mise or anything in Homebrew; Sublime's LSP packages then complain that they can't find a Node.js runtime. The `dev.dotfiles.gui-path` LaunchAgent (`launchd/`) runs `launchctl setenv PATH ...` at login, putting `~/.local/share/mise/shims` and `/opt/homebrew/bin` ahead of the macOS defaults for apps launched afterwards. Restart an app after it is first loaded; apps that were already running keep their old environment.
 
 ## Private config (1Password)
 

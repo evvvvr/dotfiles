@@ -48,17 +48,20 @@ rm -f "${SUBL_USER}/Package Control.sublime-settings"
 cp "${DOTFILES}/sublime-text/Library/Application Support/Sublime Text/Packages/User/Package Control.sublime-settings" "${SUBL_USER}/"
 info "Sublime Text Package Control settings (copied)"
 
-# Daily background upgrade job (see scripts/auto-upgrade.sh). Reload so edits apply.
-AGENT="dev.dotfiles.auto-upgrade"
-PLIST="${HOME}/Library/LaunchAgents/${AGENT}.plist"
-if [ -e "$PLIST" ] && command -v launchctl &>/dev/null; then
-  launchctl bootout "gui/$(id -u)/${AGENT}" 2>/dev/null || true
-  if launchctl bootstrap "gui/$(id -u)" "$PLIST"; then
-    info "launchd agent ${AGENT} loaded (daily 03:30)"
-  else
-    warning "could not load launchd agent ${AGENT}"
+# launchd agents (loaded/reloaded so edits apply):
+#   dev.dotfiles.auto-upgrade - daily unattended upgrades (scripts/auto-upgrade.sh)
+#   dev.dotfiles.gui-path     - PATH for GUI apps so Sublime LSP etc. can find node
+for AGENT in dev.dotfiles.auto-upgrade dev.dotfiles.gui-path; do
+  PLIST="${HOME}/Library/LaunchAgents/${AGENT}.plist"
+  if [ -e "$PLIST" ] && command -v launchctl &>/dev/null; then
+    launchctl bootout "gui/$(id -u)/${AGENT}" 2>/dev/null || true
+    if launchctl bootstrap "gui/$(id -u)" "$PLIST"; then
+      info "launchd agent ${AGENT} loaded"
+    else
+      warning "could not load launchd agent ${AGENT}"
+    fi
   fi
-fi
+done
 
 # Private config kept in 1Password (skips quietly if op is unavailable).
 bash "${DOTFILES}/scripts/restore-private-config.sh" || true
