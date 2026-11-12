@@ -56,6 +56,9 @@ success "Python installed"
 "${BREW_PREFIX}/bin/mise" use --global node@lts
 success "Node.js LTS installed"
 
+header "🤖 Claude Code (CLI, plugins, language servers)"
+bash "${HOME}/dotfiles/claude/bootstrap-plugins.sh" || warning "Claude bootstrap reported failures (re-run claude/bootstrap-plugins.sh)"
+
 header "🗄️ Database tools"
 uv tool install harlequin
 success "harlequin installed"

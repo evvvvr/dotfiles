@@ -76,6 +76,9 @@ cmd_sync() {
 
   symlink_configs
 
+  header "🤖 Claude Code plugins"
+  bash "${DOTFILES}/claude/bootstrap-plugins.sh" || warning "Claude bootstrap reported failures"
+
   header "🍎 Applying macOS settings"
   bash "${DOTFILES}/macos.sh"
 

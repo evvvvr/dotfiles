@@ -10,6 +10,7 @@ macOS setup scripts and configuration files.
 | `Brewfile` | Homebrew packages, casks, and VS Code extensions |
 | `setup.sh` | Fresh machine setup (called by `dotfiles.sh setup`) |
 | `macos.sh` | macOS system preferences (called by `dotfiles.sh sync`) |
+| `claude/` | Claude Code CLI + plugin bootstrap (`bootstrap-plugins.sh`, declarative `plugins.json`) |
 | `ghostty/` | Ghostty terminal config |
 | `sublime-text/` | Sublime Text preferences and package list |
 | `vscode/` | VS Code settings |
