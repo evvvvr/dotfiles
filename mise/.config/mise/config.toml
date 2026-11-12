@@ -10,3 +10,41 @@ tflint = "latest"
 "npm:typescript" = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:pyright" = "latest"
+
+# --- dotfiles tasks (global, run from anywhere: `mise run dotfiles:<name>`) ---
+# Thin wrappers; the logic lives in ~/dotfiles/scripts. Extra arguments are
+# appended to the command, e.g. `mise run dotfiles:setup --skip-ssh`.
+[tasks."dotfiles:setup"]
+description = "Fresh machine setup (installs everything; --skip-ssh to skip SSH key)"
+run = 'bash "$HOME/dotfiles/setup.sh"'
+raw = true
+
+[tasks."dotfiles:sync"]
+description = "Sync this machine to the dotfiles (packages, links, Claude, macOS settings)"
+run = 'bash "$HOME/dotfiles/scripts/sync.sh"'
+raw = true
+
+[tasks."dotfiles:update"]
+description = "Update the dotfiles to match this machine (VS Code extensions, brew diff)"
+run = 'bash "$HOME/dotfiles/scripts/update.sh"'
+raw = true
+
+[tasks."dotfiles:upgrade"]
+description = "Upgrade all software now (brew, mise, rustup, uv, npm, Claude, VS Code, CLT)"
+run = 'bash "$HOME/dotfiles/scripts/upgrade.sh"'
+raw = true
+
+[tasks."dotfiles:link"]
+description = "Re-stow configs, reload launchd agent, restore private config"
+run = 'bash "$HOME/dotfiles/scripts/link.sh"'
+raw = true
+
+[tasks."dotfiles:claude"]
+description = "Install/refresh Claude CLI, plugins, skills and language servers"
+run = 'bash "$HOME/dotfiles/scripts/claude-bootstrap.sh"'
+raw = true
+
+[tasks."dotfiles:private"]
+description = "Restore private files (AWS config, Sublime license) from 1Password"
+run = 'bash "$HOME/dotfiles/scripts/restore-private-config.sh"'
+raw = true

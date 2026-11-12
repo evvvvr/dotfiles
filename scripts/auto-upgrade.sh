@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Unattended upgrade of everything that can be upgraded without sudo or prompts.
 # Run daily by launchd (launchd/Library/LaunchAgents/dev.dotfiles.auto-upgrade.plist);
-# `dotfiles.sh upgrade` runs it in the foreground with --foreground.
+# `mise run dotfiles:upgrade` (scripts/upgrade.sh) runs it in the foreground with --foreground.
 #
 # Output: ~/.cache/dotfiles/upgrade.log, status: ~/.cache/dotfiles/upgrade-status
 # Never run from shell startup. Casks that update themselves (VS Code, Warp, ...)

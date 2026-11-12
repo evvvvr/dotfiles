@@ -97,7 +97,7 @@ _dotfiles_upgrade_status() {
   local failed="$(grep '^failed=' "$f" | cut -d= -f2-)"
   [[ -n $failed ]] && print -P "%F{yellow}!%f last auto-upgrade failed: ${failed} (log: ~/.cache/dotfiles/upgrade.log)"
   local -a stale; stale=( $f(Nmd+3) )
-  (( $#stale )) && print -P "%F{yellow}!%f auto-upgrade has not run for 3+ days (dotfiles.sh upgrade)"
+  (( $#stale )) && print -P "%F{yellow}!%f auto-upgrade has not run for 3+ days (mise run dotfiles:upgrade)"
   return 0
 }
 _dotfiles_upgrade_status

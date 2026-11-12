@@ -7,12 +7,12 @@ macOS setup scripts and configuration files.
 | Path | Contents |
 |------|----------|
 | `bootstrap.sh` | One-command fresh-machine entry point (Homebrew, download repo, run setup) |
-| `dotfiles.sh` | Main CLI — setup, sync, update, upgrade |
 | `Brewfile` | Homebrew packages, casks, and VS Code extensions |
-| `setup.sh` | Fresh machine setup (called by `dotfiles.sh setup`) |
-| `macos.sh` | macOS system preferences (called by `dotfiles.sh sync`) |
+| `setup.sh` | Fresh machine setup (`mise run dotfiles:setup`) |
+| `macos.sh` | macOS system preferences (called by `scripts/sync.sh`) |
 | `claude/` | Claude Code global `CLAUDE.md` (stow package) |
-| `scripts/` | `link.sh` (stow), `auto-upgrade.sh` (daily unattended upgrades), `claude-bootstrap.sh` + `claude-plugins.json` (Claude CLI, plugins, language servers) |
+| `mise/` | Global mise config: runtimes, npm CLIs and the `dotfiles:*` tasks (stow package) |
+| `scripts/` | `sync.sh`, `update.sh`, `upgrade.sh`, `lib.sh` (behind the mise tasks), `link.sh` (stow), `auto-upgrade.sh` (daily unattended upgrades), `claude-bootstrap.sh` + `claude-plugins.json` (Claude CLI, plugins, language servers) |
 | `launchd/` | LaunchAgent that runs `auto-upgrade.sh` daily (stow package) |
 | `ghostty/` | Ghostty terminal config |
 | `sublime-text/` | Sublime Text preferences and package list |
@@ -30,7 +30,7 @@ Run one command:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/evvvvr/dotfiles/main/bootstrap.sh)"
 ```
 
-`bootstrap.sh` installs Homebrew (which also installs the Xcode Command Line Tools if missing), downloads this repo to `~/dotfiles` as a tarball (no git needed), turns it into a git checkout tracking `origin/main`, and runs `dotfiles.sh setup`. Use the `bash -c "$(curl ...)"` form rather than `curl | bash`, because the Homebrew installer needs the terminal for its prompts. It is safe to re-run.
+`bootstrap.sh` installs Homebrew (which also installs the Xcode Command Line Tools if missing), downloads this repo to `~/dotfiles` as a tarball (no git needed), turns it into a git checkout tracking `origin/main`, and runs `setup.sh`. Use the `bash -c "$(curl ...)"` form rather than `curl | bash`, because the Homebrew installer needs the terminal for its prompts. It is safe to re-run.
 
 Setup then:
 - Checks for Xcode Command Line Tools and prompts to install if missing
@@ -47,16 +47,30 @@ To skip SSH key generation (e.g. you're restoring an existing key), pass the fla
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/evvvvr/dotfiles/main/bootstrap.sh)" bootstrap --skip-ssh
 ```
 
-Already have the repo? Run setup directly: `bash ~/dotfiles/dotfiles.sh setup [--skip-ssh]`.
+Already have the repo? Run setup directly: `bash ~/dotfiles/setup.sh [--skip-ssh]` (or `mise run dotfiles:setup --skip-ssh` once mise is installed).
 
 ## Day-to-day usage
+
+Commands are global mise tasks (defined in `mise/.config/mise/config.toml`, so they work from any directory). They are thin wrappers around the scripts in `scripts/`. List them with `mise tasks ls`:
+
+| Task | What it does |
+|---|---|
+| `dotfiles:setup` | Fresh machine setup (`--skip-ssh` to skip the SSH key) |
+| `dotfiles:sync` | Brew bundle, re-stow, Claude setup, macOS settings |
+| `dotfiles:update` | Update the repo to match this machine |
+| `dotfiles:upgrade` | Upgrade all software now |
+| `dotfiles:link` | Re-stow configs, reload the launchd agent, restore private config |
+| `dotfiles:claude` | Claude CLI, plugins, skills, language servers |
+| `dotfiles:private` | Restore AWS config and Sublime license from 1Password |
+
+On a brand-new machine mise isn't installed yet, so start with the `bootstrap.sh` one-liner above.
 
 ### Sync machine to dotfiles
 
 Installs any missing Homebrew packages, re-stows configs, re-runs the Claude bootstrap (installs only what's missing), and applies macOS settings. Does not upgrade or uninstall anything on the machine.
 
 ```sh
-~/dotfiles/dotfiles.sh sync
+mise run dotfiles:sync
 ```
 
 ### Upgrade all software
@@ -66,7 +80,7 @@ Installs any missing Homebrew packages, re-stows configs, re-runs the Claude boo
 **Manual:** runs the same upgrade in the foreground, plus VS Code extensions and an optional Xcode Command Line Tools update (prompts for sudo). Sublime packages update inside Sublime.
 
 ```sh
-~/dotfiles/dotfiles.sh upgrade
+mise run dotfiles:upgrade
 ```
 
 To pause the automatic job: `launchctl bootout gui/$(id -u)/dev.dotfiles.auto-upgrade` (re-enable by running `scripts/link.sh`).
@@ -76,7 +90,7 @@ To pause the automatic job: `launchctl bootout gui/$(id -u)/dev.dotfiles.auto-up
 Auto-syncs VS Code extensions in the Brewfile, shows any brew packages installed but not tracked, and copies Sublime's `Package Control.sublime-settings` back into the repo.
 
 ```sh
-~/dotfiles/dotfiles.sh update
+mise run dotfiles:update
 ```
 
 > macOS settings cannot be captured automatically — edit `macos.sh` manually when preferences change.

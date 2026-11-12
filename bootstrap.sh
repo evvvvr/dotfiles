@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # One-command fresh-machine bootstrap: installs Homebrew, downloads this repo
-# (no git needed), and runs `dotfiles.sh setup`.
+# (no git needed), and runs `setup.sh`.
 #
 #   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/evvvvr/dotfiles/main/bootstrap.sh)" bootstrap [--skip-ssh]
 #
 # Use the `bash -c "$(curl ...)"` form, not `curl | bash`: the Homebrew installer
 # is interactive and needs the terminal on stdin. Arguments are passed on to
-# `dotfiles.sh setup`. Safe to re-run.
+# `setup.sh`. Safe to re-run.
 #
 # Test hooks: DOTFILES_DIR overrides the download location (setup.sh itself
 # always uses ~/dotfiles, so only combine it with DOTFILES_SKIP_SETUP=1).
@@ -36,7 +36,7 @@ fi
 
 # 2. Download the repo
 header "📥 Dotfiles"
-if [ -f "${DEST}/dotfiles.sh" ]; then
+if [ -f "${DEST}/setup.sh" ]; then
   success "Already present at ${DEST}"
 elif [ -d "${DEST}" ] && [ -n "$(ls -A "${DEST}")" ]; then
   error "${DEST} exists and is not a dotfiles checkout; move it away and re-run"
@@ -65,4 +65,4 @@ fi
 
 # 4. Run the main setup
 header "🚀 Running dotfiles setup"
-exec bash "${DEST}/dotfiles.sh" setup "$@"
+exec bash "${DEST}/setup.sh" "$@"
