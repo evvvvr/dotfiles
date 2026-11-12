@@ -17,7 +17,7 @@ macOS setup scripts and configuration files.
 | `ghostty/` | Ghostty terminal config |
 | `sublime-text/` | Sublime Text preferences and package list |
 | `vscode/` | VS Code settings |
-| `git/` | Git config and helpers |
+| `git/` | Git config and global gitignore |
 | `starship/` | Starship prompt config |
 | `zsh/` | Zsh config |
 | `bash/` | Bash config |
@@ -97,4 +97,4 @@ The Brewfile installs `shellcheck`, `shfmt`, `hadolint`, `actionlint`, `kubeconf
 
 ## Layout (GNU Stow)
 
-Each top-level config folder (`bash`, `zsh`, `git`, `starship`, `ghostty`, `vscode`, `sublime-text`, `claude`, `launchd`, `mise`, `btop`, `television`) is a stow package whose contents mirror `$HOME`, e.g. `starship/.config/starship.toml` -> `~/.config/starship.toml`. `scripts/link.sh` runs `stow --no-folding` so only individual files are linked (never whole directories like `~/.claude`). Files that must not be linked (the git helper script, Sublime's `Package Control.sublime-settings`) are listed in each package's `.stow-local-ignore` and handled by `link.sh` directly.
+Each top-level config folder (`bash`, `zsh`, `git`, `starship`, `ghostty`, `vscode`, `sublime-text`, `claude`, `launchd`, `mise`, `btop`, `television`) is a stow package whose contents mirror `$HOME`, e.g. `starship/.config/starship.toml` -> `~/.config/starship.toml`. `scripts/link.sh` runs `stow --no-folding` so only individual files are linked (never whole directories like `~/.claude`). Files that must not be linked (Sublime's `Package Control.sublime-settings`) are listed in each package's `.stow-local-ignore` and handled by `link.sh` directly.

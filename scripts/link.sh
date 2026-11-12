@@ -38,10 +38,6 @@ stow --no-folding --restow --dir "$DOTFILES" --target "$HOME" "${PACKAGES[@]}"
 success "Stowed: ${PACKAGES[*]}"
 
 # Not expressible as stow links:
-BREW_PREFIX="$(brew --prefix 2>/dev/null || echo /opt/homebrew)"
-ln -sf "${DOTFILES}/git/git-clean-stale-local-branches" "${BREW_PREFIX}/bin/git-clean-stale-local-branches"
-info "git helpers"
-
 if [ -d "${HOME}/projects/RustTestExplorer" ]; then
   ln -sfn "${HOME}/projects/RustTestExplorer" "${HOME}/Library/Application Support/Sublime Text/Packages/RustTestExplorer"
   info "Sublime Text RustTestExplorer plugin"
