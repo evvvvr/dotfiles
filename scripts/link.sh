@@ -61,4 +61,4 @@ if [ -e "$PLIST" ] && command -v launchctl &>/dev/null; then
 fi
 
 # Private config kept in 1Password (skips quietly if op is unavailable).
-bash "${DOTFILES}/scripts/restore-aws-config.sh" || true
+bash "${DOTFILES}/scripts/restore-private-config.sh" || true

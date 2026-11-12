@@ -89,7 +89,14 @@ To add a plugin, add it to `enabledPlugins` (and its marketplace to `extraKnownM
 
 ## Private config (1Password)
 
-`~/.aws/config` is not stored in this public repo, since it names profiles, accounts and SSO URLs. `scripts/restore-aws-config.sh` (called from `scripts/link.sh`) restores it from the 1Password secure note `op://Personal/aws-config/notesPlain` using the 1Password CLI (`op`). It skips quietly when `op` is missing or locked, backs up a different existing file instead of overwriting it, and never touches credentials. On a new machine, enable Settings > Developer > "Integrate with 1Password CLI" in the app, then re-run `scripts/link.sh`.
+Some files are kept out of this public repo and restored from 1Password secure notes by `scripts/restore-private-config.sh` (called from `scripts/link.sh`, using the 1Password CLI `op`):
+
+| File | 1Password note | Why it is not in the repo |
+|---|---|---|
+| `~/.aws/config` | `op://Personal/aws-config/notesPlain` | names profiles, accounts and SSO URLs |
+| Sublime Text license (`.../Sublime Text/Local/License.sublime_license`) | `op://Personal/SublimeText/reg_code` (a 1Password Software License item) | the license is a secret |
+
+The script skips quietly when `op` is missing or locked, backs up a differing existing file instead of overwriting it, refuses to write a license that does not contain `BEGIN LICENSE`, only creates the Sublime license when none exists (it never replaces an installed one), and never touches credentials. Item titles must not contain `/`. On a new machine, enable Settings > Developer > "Integrate with 1Password CLI" in the app, then re-run `scripts/link.sh`.
 
 ## Linting
 
