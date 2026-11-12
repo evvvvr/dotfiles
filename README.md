@@ -62,6 +62,14 @@ Installs any missing packages, re-stows configs, applies macOS settings. Does no
 ~/dotfiles/dotfiles.sh sync
 ```
 
+### Upgrade all software
+
+Upgrades Homebrew formulae and casks, mise runtimes, Rust, uv tools, npm globals, the Claude CLI and plugins, VS Code extensions, and offers the Xcode Command Line Tools update (prompts for sudo). macOS system updates and Sublime packages are left to you.
+
+```sh
+~/dotfiles/dotfiles.sh upgrade
+```
+
 ### Update dotfiles to match machine
 
 Auto-syncs VS Code extensions in the Brewfile and shows any brew packages installed but not tracked.

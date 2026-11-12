@@ -101,6 +101,59 @@ cmd_update() {
   echo -e "\n${GREEN}${BOLD}✓ Update complete!${RESET}\n"
 }
 
+cmd_upgrade() {
+  header "⬆️  Upgrading all software"
+  FAILED_STEPS=()
+  step() {  # step "<label>" <command...>
+    local label="$1"; shift
+    header "  ${label}"
+    if "$@"; then success "${label} done"; else warning "${label} failed"; FAILED_STEPS+=("$label"); fi
+  }
+
+  if command -v brew &>/dev/null; then
+    step "Homebrew formulae" bash -c 'brew update && brew upgrade'
+    step "Homebrew casks"    brew upgrade --cask --greedy
+    step "Homebrew cleanup"  brew cleanup
+  fi
+  command -v mise   &>/dev/null && step "mise runtimes"   mise upgrade
+  command -v rustup &>/dev/null && step "Rust toolchain"  rustup update
+  command -v uv     &>/dev/null && step "uv tools"        uv tool upgrade --all
+  command -v npm    &>/dev/null && step "npm globals"     npm update -g
+  if command -v claude &>/dev/null; then
+    step "Claude Code CLI" claude update
+    if command -v jq &>/dev/null; then
+      step "Claude Code plugins" bash -c 'for p in $(claude plugin list --json | jq -r ".[].id"); do claude plugin update "$p" || exit 1; done'
+    fi
+  fi
+  if command -v code &>/dev/null; then
+    step "VS Code extensions" bash -c 'code --list-extensions | xargs -n1 code --install-extension --force'
+  fi
+
+  header "  Xcode Command Line Tools / macOS"
+  CLT_LABEL="$(softwareupdate -l 2>&1 | sed -n 's/^\* Label: \(Command Line Tools.*\)$/\1/p' | tail -1)"
+  if [ -n "$CLT_LABEL" ]; then
+    warning "Update available: ${CLT_LABEL}"
+    if [ -t 0 ]; then
+      read -r -p "  Install it now (needs sudo)? [y/N] " ans
+      if [[ "$ans" =~ ^[Yy]$ ]]; then
+        step "Command Line Tools" sudo softwareupdate -i "$CLT_LABEL"
+      fi
+    else
+      dim "Run: sudo softwareupdate -i \"${CLT_LABEL}\""
+    fi
+  else
+    success "Command Line Tools up to date"
+  fi
+  dim "Other macOS updates: softwareupdate -l (install with sudo softwareupdate -ia)"
+  dim "Sublime Text packages: update via Package Control inside Sublime"
+
+  if [ "${#FAILED_STEPS[@]}" -gt 0 ]; then
+    echo -e "\n${YELLOW}${BOLD}Finished with failures:${RESET} ${FAILED_STEPS[*]}\n"
+    return 1
+  fi
+  echo -e "\n${GREEN}${BOLD}✓ Upgrade complete!${RESET}\n"
+}
+
 usage() {
   echo -e "${BOLD}Usage:${RESET} dotfiles.sh <command> [options]"
   echo ""
@@ -109,6 +162,7 @@ usage() {
   echo -e "           Options: --skip-ssh"
   echo -e "  ${GREEN}sync${RESET}     Sync machine to dotfiles (packages, symlinks, macOS settings)"
   echo -e "  ${GREEN}update${RESET}   Update dotfiles to match machine (VS Code extensions, brew diff)"
+  echo -e "  ${GREEN}upgrade${RESET}  Upgrade installed software (brew, mise, rustup, uv, npm, Claude, VS Code, CLT)"
   echo ""
 }
 
@@ -116,5 +170,6 @@ case "${1:-}" in
   setup)  shift; cmd_setup "$@" ;;
   sync)   cmd_sync ;;
   update) cmd_update ;;
+  upgrade) cmd_upgrade ;;
   *)      usage ;;
 esac
