@@ -35,6 +35,7 @@ Run one command:
 Setup then:
 - Checks for Xcode Command Line Tools and prompts to install if missing
 - Installs all packages and apps via Homebrew
+- Pauses (interactive terminal only) until the 1Password CLI can reach the app, so private config is restored on the first run; type `s` to skip (`scripts/wait-for-1password.sh`)
 - Symlinks all config files with GNU Stow (`scripts/link.sh`), loads the daily auto-upgrade launchd agent and restores `~/.aws/config` from 1Password if available
 - Installs the Rust toolchain via `rustup`, Python via `uv`, and the tools in the stowed mise config (Node.js, tflint, typescript, typescript-language-server, pyright) via `mise install`
 - Installs the Claude CLI, plugins, skills and language servers (`scripts/claude-bootstrap.sh`, see [Claude Code](#claude-code))
@@ -114,7 +115,7 @@ Some files are kept out of this public repo and restored from 1Password secure n
 | `~/.aws/config` | `op://Personal/aws-config/notesPlain` | names profiles, accounts and SSO URLs |
 | Sublime Text license (`.../Sublime Text/Local/License.sublime_license`) | `op://Personal/SublimeText/reg_code` (a 1Password Software License item) | the license is a secret |
 
-The script skips quietly when `op` is missing or locked, backs up a differing existing file instead of overwriting it, refuses to write a license that does not contain `BEGIN LICENSE`, only creates the Sublime license when none exists (it never replaces an installed one), and never touches credentials. Item titles must not contain `/`. On a new machine, enable Settings > Developer > "Integrate with 1Password CLI" in the app, then re-run `scripts/link.sh`.
+The script skips quietly when `op` is missing or locked, backs up a differing existing file instead of overwriting it, refuses to write a license that does not contain `BEGIN LICENSE`, only creates the Sublime license when none exists (it never replaces an installed one), and never touches credentials. Item titles must not contain `/`. On a new machine, `setup.sh` opens 1Password and pauses so you can sign in and enable Settings > Developer > "Integrate with 1Password CLI"; if you skip that, run `mise run dotfiles:private` later. Commit signing through the 1Password SSH agent is a separate in-app setting (Developer > SSH agent) and is not managed here.
 
 ## Linting
 

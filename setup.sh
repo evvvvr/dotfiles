@@ -44,6 +44,9 @@ header "📦 CLI tools"
 brew bundle --file "${HOME}/dotfiles/Brewfile"
 success "Homebrew packages installed"
 
+header "🔐 1Password (for private config)"
+bash "${HOME}/dotfiles/scripts/wait-for-1password.sh" || true
+
 header "🔗 Linking config files (stow)"
 bash "${HOME}/dotfiles/scripts/link.sh"
 
