@@ -88,6 +88,20 @@ alias pn="pnpm"
 
 alias awsume="source awsume"
 
+# --- Background auto-upgrade status ---
+# The upgrade itself runs from launchd (scripts/auto-upgrade.sh), never here.
+# This only reads a small status file: no network, no subprocess slower than grep.
+_dotfiles_upgrade_status() {
+  local f="${XDG_CACHE_HOME:-$HOME/.cache}/dotfiles/upgrade-status"
+  [[ -r $f ]] || return 0
+  local failed="$(grep '^failed=' "$f" | cut -d= -f2-)"
+  [[ -n $failed ]] && print -P "%F{yellow}!%f last auto-upgrade failed: ${failed} (log: ~/.cache/dotfiles/upgrade.log)"
+  local -a stale; stale=( $f(Nmd+3) )
+  (( $#stale )) && print -P "%F{yellow}!%f auto-upgrade has not run for 3+ days (dotfiles.sh upgrade)"
+  return 0
+}
+_dotfiles_upgrade_status
+
 # --- Plugins (zsh-syntax-highlighting must be last) ---
 _brew="${HOMEBREW_PREFIX:-/opt/homebrew}"
 [[ -f ${_brew}/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&

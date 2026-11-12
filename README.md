@@ -11,7 +11,8 @@ macOS setup scripts and configuration files.
 | `setup.sh` | Fresh machine setup (called by `dotfiles.sh setup`) |
 | `macos.sh` | macOS system preferences (called by `dotfiles.sh sync`) |
 | `claude/` | Claude Code global `CLAUDE.md` (stow package) |
-| `scripts/` | `link.sh` (stow), `claude-bootstrap.sh` + `claude-plugins.json` (Claude CLI, plugins, language servers) |
+| `scripts/` | `link.sh` (stow), `auto-upgrade.sh` (daily unattended upgrades), `claude-bootstrap.sh` + `claude-plugins.json` (Claude CLI, plugins, language servers) |
+| `launchd/` | LaunchAgent that runs `auto-upgrade.sh` daily (stow package) |
 | `ghostty/` | Ghostty terminal config |
 | `sublime-text/` | Sublime Text preferences and package list |
 | `vscode/` | VS Code settings |
@@ -43,7 +44,8 @@ This will:
 - Install Rust toolchain via `rustup`
 - Install latest Python via `uv`
 - Install Node.js LTS via `mise`
-- Symlink all config files with GNU Stow (`scripts/link.sh`)
+- Symlink all config files with GNU Stow (`scripts/link.sh`) and load the daily auto-upgrade launchd agent
+- Install the Claude CLI, plugins and language servers (`scripts/claude-bootstrap.sh`)
 - Apply macOS system preferences
 - Generate an SSH key and copy the public key to clipboard
 
@@ -64,7 +66,9 @@ Installs any missing packages, re-stows configs, applies macOS settings. Does no
 
 ### Upgrade all software
 
-Upgrades Homebrew formulae and casks, mise runtimes, Rust, uv tools, npm globals, the Claude CLI and plugins, VS Code extensions, and offers the Xcode Command Line Tools update (prompts for sudo). macOS system updates and Sublime packages are left to you.
+**Automatic:** a launchd agent (`launchd/` package, loaded by `scripts/link.sh`) runs `scripts/auto-upgrade.sh` daily at 03:30 (or on wake if the Mac was asleep). It upgrades Homebrew formulae and non-self-updating casks, mise runtimes, Rust, uv tools, npm globals and Claude plugins. Output goes to `~/.cache/dotfiles/upgrade.log`; a failure triggers a notification and a one-line warning in new zsh sessions (a cheap file read, no network). Self-updating apps (VS Code, Warp, ...) update themselves, and sudo items (macOS, Xcode Command Line Tools) are never run unattended.
+
+**Manual:** runs the same upgrade in the foreground, plus VS Code extensions and an optional Xcode Command Line Tools update (prompts for sudo). Sublime packages update inside Sublime.
 
 ```sh
 ~/dotfiles/dotfiles.sh upgrade
@@ -82,4 +86,4 @@ Auto-syncs VS Code extensions in the Brewfile and shows any brew packages instal
 
 ## Layout (GNU Stow)
 
-Each top-level config folder (`bash`, `zsh`, `git`, `starship`, `ghostty`, `vscode`, `sublime-text`, `claude`) is a stow package whose contents mirror `$HOME`, e.g. `starship/.config/starship.toml` -> `~/.config/starship.toml`. `scripts/link.sh` runs `stow --no-folding` so only individual files are linked (never whole directories like `~/.claude`). Files that must not be linked (the git helper script, Sublime's `Package Control.sublime-settings`) are listed in each package's `.stow-local-ignore` and handled by `link.sh` directly.
+Each top-level config folder (`bash`, `zsh`, `git`, `starship`, `ghostty`, `vscode`, `sublime-text`, `claude`, `launchd`) is a stow package whose contents mirror `$HOME`, e.g. `starship/.config/starship.toml` -> `~/.config/starship.toml`. `scripts/link.sh` runs `stow --no-folding` so only individual files are linked (never whole directories like `~/.claude`). Files that must not be linked (the git helper script, Sublime's `Package Control.sublime-settings`) are listed in each package's `.stow-local-ignore` and handled by `link.sh` directly.

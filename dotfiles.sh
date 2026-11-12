@@ -110,23 +110,10 @@ cmd_upgrade() {
     if "$@"; then success "${label} done"; else warning "${label} failed"; FAILED_STEPS+=("$label"); fi
   }
 
-  if command -v brew &>/dev/null; then
-    step "Homebrew formulae" bash -c 'brew update && brew upgrade'
-    step "Homebrew casks"    brew upgrade --cask --greedy
-    step "Homebrew cleanup"  brew cleanup
-  fi
-  command -v mise   &>/dev/null && step "mise runtimes"   mise upgrade
-  command -v rustup &>/dev/null && step "Rust toolchain"  rustup update
-  command -v uv     &>/dev/null && step "uv tools"        uv tool upgrade --all
-  command -v npm    &>/dev/null && step "npm globals"     npm update -g
-  if command -v claude &>/dev/null; then
-    step "Claude Code CLI" claude update
-    if command -v jq &>/dev/null; then
-      step "Claude Code plugins" bash -c 'for p in $(claude plugin list --json | jq -r ".[].id"); do claude plugin update "$p" || exit 1; done'
-    fi
-  fi
+  step "Auto-upgrade (brew, mise, rustup, uv, npm, Claude plugins)" bash "${DOTFILES}/scripts/auto-upgrade.sh" --foreground
+
   if command -v code &>/dev/null; then
-    step "VS Code extensions" bash -c 'code --list-extensions | xargs -n1 code --install-extension --force'
+    step "VS Code extensions" bash -c 'code --list-extensions | while read -r ext; do [ -n "$ext" ] && code --install-extension "$ext" --force </dev/null; done'
   fi
 
   header "  Xcode Command Line Tools / macOS"
@@ -162,7 +149,7 @@ usage() {
   echo -e "           Options: --skip-ssh"
   echo -e "  ${GREEN}sync${RESET}     Sync machine to dotfiles (packages, symlinks, macOS settings)"
   echo -e "  ${GREEN}update${RESET}   Update dotfiles to match machine (VS Code extensions, brew diff)"
-  echo -e "  ${GREEN}upgrade${RESET}  Upgrade installed software (brew, mise, rustup, uv, npm, Claude, VS Code, CLT)"
+  echo -e "  ${GREEN}upgrade${RESET}  Upgrade everything now (same as the daily background job, plus VS Code extensions and CLT)"
   echo ""
 }
 
