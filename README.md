@@ -67,7 +67,7 @@ On a brand-new machine mise isn't installed yet, so start with the `bootstrap.sh
 
 ### Sync machine to dotfiles
 
-Installs any missing Homebrew packages, re-stows configs, re-runs the Claude bootstrap (installs only what's missing), and applies macOS settings. Does not upgrade or uninstall anything on the machine.
+Installs any missing Homebrew packages, re-stows configs, re-runs the Claude bootstrap (installs only what's missing), and applies macOS settings. It never upgrades or uninstalls anything (`brew bundle --no-upgrade`); upgrading is a separate task, `dotfiles:upgrade`, plus the nightly job.
 
 ```sh
 mise run dotfiles:sync

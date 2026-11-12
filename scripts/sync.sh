@@ -6,8 +6,10 @@ set -e
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
 header "📦 Syncing packages"
-brew bundle --file "$BREWFILE"
-success "Packages synced (extras on machine kept)"
+# --no-upgrade: sync only installs what is missing; upgrading is `mise run dotfiles:upgrade`
+# (and the nightly launchd job).
+brew bundle install --no-upgrade --file "$BREWFILE"
+success "Packages synced (nothing upgraded, extras on machine kept)"
 
 header "🔗 Linking config files (stow)"
 bash "${DOTFILES}/scripts/link.sh"
