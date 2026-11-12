@@ -6,6 +6,7 @@ macOS setup scripts and configuration files.
 
 | Path | Contents |
 |------|----------|
+| `bootstrap.sh` | One-command fresh-machine entry point (Homebrew, download repo, run setup) |
 | `dotfiles.sh` | Main CLI — setup, sync, update, upgrade |
 | `Brewfile` | Homebrew packages, casks, and VS Code extensions |
 | `setup.sh` | Fresh machine setup (called by `dotfiles.sh setup`) |
@@ -23,22 +24,15 @@ macOS setup scripts and configuration files.
 
 ## Fresh machine setup
 
-1. Install Homebrew (also installs Xcode Command Line Tools if missing):
-   ```sh
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/homebrew/install/HEAD/install.sh)"
-   ```
+Run one command:
 
-2. Clone this repo:
-   ```sh
-   git clone https://github.com/evvvvr/dotfiles ~/dotfiles
-   ```
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/evvvvr/dotfiles/main/bootstrap.sh)"
+```
 
-3. Run setup:
-   ```sh
-   bash ~/dotfiles/dotfiles.sh setup
-   ```
+`bootstrap.sh` installs Homebrew (which also installs the Xcode Command Line Tools if missing), downloads this repo to `~/dotfiles` as a tarball (no git needed), turns it into a git checkout tracking `origin/main`, and runs `dotfiles.sh setup`. Use the `bash -c "$(curl ...)"` form rather than `curl | bash`, because the Homebrew installer needs the terminal for its prompts. It is safe to re-run.
 
-This will:
+Setup then:
 - Check for Xcode Command Line Tools and prompt to install if missing
 - Install all packages and apps via Homebrew
 - Install Rust toolchain via `rustup`
@@ -50,10 +44,12 @@ This will:
 - Apply macOS system preferences
 - Generate an SSH key and copy the public key to clipboard
 
-To skip SSH key generation (e.g. you're restoring an existing key):
+To skip SSH key generation (e.g. you're restoring an existing key), pass the flag through:
 ```sh
-bash ~/dotfiles/dotfiles.sh setup --skip-ssh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/evvvvr/dotfiles/main/bootstrap.sh)" bootstrap --skip-ssh
 ```
+
+Already have the repo? Run setup directly: `bash ~/dotfiles/dotfiles.sh setup [--skip-ssh]`.
 
 ## Day-to-day usage
 
