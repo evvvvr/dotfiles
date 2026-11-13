@@ -52,6 +52,24 @@ for d in "${HOME}"/.claude/skills/*/.git; do
   [ -d "$d" ] && run "claude skills ($(basename "$(dirname "$d")"))" git -C "$(dirname "$d")" pull --ff-only --quiet
 done
 
+# Self-updating casks (VS Code, Warp, ...) are skipped above (no --greedy). Report the
+# ones that are still outdated, but never upgrade them here. The log lists them
+# every run; a macOS notification is shown at most once a week.
+if command -v brew &>/dev/null; then
+  echo "--- self-updating apps still outdated"
+  APPS_OUTDATED="$(brew outdated --cask --greedy --verbose 2>/dev/null)"
+  if [ -z "$APPS_OUTDATED" ]; then
+    echo "none"
+  else
+    echo "$APPS_OUTDATED"
+    STAMP="${CACHE_DIR}/app-updates-notified"
+    if ! $FOREGROUND && { [ ! -f "$STAMP" ] || [ -n "$(find "$STAMP" -mtime +6 2>/dev/null)" ]; }; then
+      NAMES="$(brew outdated --cask --greedy --quiet 2>/dev/null | paste -sd, - | sed 's/,/, /g')"
+      osascript -e "display notification \"${NAMES}\" with title \"App updates available\" subtitle \"Update them in the apps, or: brew upgrade --cask --greedy\"" 2>/dev/null && touch "$STAMP"
+    fi
+  fi
+fi
+
 {
   echo "time=$(date +%s)"
   echo "failed=${FAILED[*]:-}"

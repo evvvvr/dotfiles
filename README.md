@@ -76,7 +76,7 @@ mise run dotfiles:sync
 
 ### Upgrade all software
 
-**Automatic:** a launchd agent (`launchd/` package, loaded by `scripts/link.sh`) runs `scripts/auto-upgrade.sh` daily at 03:30 (or on wake if the Mac was asleep). It upgrades Homebrew formulae and non-self-updating casks, mise runtimes, Rust, uv tools, npm globals and Claude plugins. Output goes to `~/.cache/dotfiles/upgrade.log`; a failure triggers a notification and a one-line warning in new zsh sessions (a cheap file read, no network). Self-updating apps (VS Code, Warp, ...) update themselves, and sudo items (macOS, Xcode Command Line Tools) are never run unattended.
+**Automatic:** a launchd agent (`launchd/` package, loaded by `scripts/link.sh`) runs `scripts/auto-upgrade.sh` daily at 03:30 (or on wake if the Mac was asleep). It upgrades Homebrew formulae and non-self-updating casks, mise runtimes, Rust, uv tools, npm globals and Claude plugins. Output goes to `~/.cache/dotfiles/upgrade.log`; a failure triggers a notification and a one-line warning in new zsh sessions (a cheap file read, no network). Self-updating apps (VS Code, Warp, ...) update themselves; the job only lists the ones still outdated (`brew outdated --cask --greedy`) in the log and shows one macOS notification at most once a week. sudo items (macOS, Xcode Command Line Tools) are never run unattended.
 
 **Manual:** runs the same upgrade in the foreground, plus VS Code extensions and an optional Xcode Command Line Tools update (prompts for sudo). Sublime packages update inside Sublime.
 
