@@ -2,22 +2,16 @@
 # Sync this machine to the dotfiles: packages, links, Claude setup, macOS settings.
 # Run via: mise run dotfiles:sync
 
-set -e
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
-header "📦 Syncing packages"
+ui_banner "dotfiles · sync" "packages, links, Claude, macOS settings"
+ui_total 4
+
 # --no-upgrade: sync only installs what is missing; upgrading is `mise run dotfiles:upgrade`
-# (and the nightly launchd job).
-brew bundle install --no-upgrade --file "$BREWFILE"
-success "Packages synced (nothing upgraded, extras on machine kept)"
+# (and the nightly launchd job). Streamed because casks can ask for sudo.
+ui_stream "Homebrew packages (nothing upgraded)" brew bundle install --no-upgrade --file "$BREWFILE"
+ui_run "Linking config files (stow)" bash "${DOTFILES}/scripts/link.sh"
+ui_run "Claude Code plugins" bash "${DOTFILES}/scripts/claude-bootstrap.sh"
+ui_run "macOS settings" bash "${DOTFILES}/macos.sh"
 
-header "🔗 Linking config files (stow)"
-bash "${DOTFILES}/scripts/link.sh"
-
-header "🤖 Claude Code plugins"
-bash "${DOTFILES}/scripts/claude-bootstrap.sh" || warning "Claude bootstrap reported failures"
-
-header "🍎 Applying macOS settings"
-bash "${DOTFILES}/macos.sh"
-
-echo -e "\n${GREEN}${BOLD}✓ Sync complete!${RESET}\n"
+ui_summary

@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
-
-BOLD="\033[1m"
-GREEN="\033[0;32m"
-BLUE="\033[0;34m"
-YELLOW="\033[0;33m"
-RESET="\033[0m"
-
-info()    { echo -e "${BLUE}  →${RESET} $1"; }
-success() { echo -e "${GREEN}  ✓${RESET} $1"; }
-warning() { echo -e "${YELLOW}  !${RESET} $1"; }
-header()  { echo -e "\n${BOLD}$1${RESET}"; }
+source "${HOME}/dotfiles/scripts/lib.sh"
 
 # Parse flags
 SKIP_SSH=false
@@ -21,11 +10,10 @@ for arg in "$@"; do
   esac
 done
 
+ui_banner "dotfiles · setup" "new machine bootstrap"
+
 # Xcode CLI tools (must come before Homebrew)
-header "🔧 Xcode Command Line Tools"
-if xcode-select -p &>/dev/null; then
-  success "Already installed"
-else
+if ! xcode-select -p &>/dev/null; then
   xcode-select --install
   warning "Follow the installer prompt, then re-run this script"
   exit 1
@@ -40,54 +28,36 @@ fi
 
 BREW_PREFIX="$(brew --prefix)"
 
-header "📦 CLI tools"
-brew bundle --file "${HOME}/dotfiles/Brewfile"
-success "Homebrew packages installed"
+install_rust() { command -v rustup &>/dev/null || rustup-init -y; }
+make_ssh_key() {
+  local key="${HOME}/.ssh/id_ed25519"
+  [ -f "$key" ] && { echo "SSH key already exists at ${key}"; return 0; }
+  ssh-keygen -t ed25519 -C "$(git config user.email)" -f "$key" -N "" || return 1
+  eval "$(ssh-agent -s)" &>/dev/null
+  ssh-add "$key" && pbcopy <"${key}.pub"
+}
 
-header "🔐 1Password (for private config)"
-bash "${HOME}/dotfiles/scripts/wait-for-1password.sh" || true
+total=9
+$SKIP_SSH || total=$((total + 1))
+ui_total "$total"
 
-header "🔗 Linking config files (stow)"
-bash "${HOME}/dotfiles/scripts/link.sh"
-
-header "⚙️ Languages & runtimes"
-if command -v rustup &>/dev/null; then
-  success "Rust already installed"
-else
-  rustup-init -y
-  success "Rust toolchain installed"
-fi
-uv python install
-success "Python installed"
-"${BREW_PREFIX}/bin/mise" install  # tools from the stowed ~/.config/mise/config.toml
-success "mise tools installed (Node.js per config.toml)"
-
-header "🤖 Claude Code (CLI, plugins, language servers)"
-bash "${HOME}/dotfiles/scripts/claude-bootstrap.sh" || warning "Claude bootstrap reported failures (re-run scripts/claude-bootstrap.sh)"
-
-header "🗄️ Database tools"
-uv tool install harlequin
-success "harlequin installed"
-
-header "🍎 macOS settings"
-"${HOME}/dotfiles/macos.sh"
-
-# SSH key
-if [ "$SKIP_SSH" = false ]; then
-  header "🔑 SSH key"
-  SSH_KEY="${HOME}/.ssh/id_ed25519"
-  if [ -f "$SSH_KEY" ]; then
-    warning "SSH key already exists at ${SSH_KEY}, skipping"
-  else
-    ssh-keygen -t ed25519 -C "$(git config user.email)" -f "$SSH_KEY" -N ""
-    eval "$(ssh-agent -s)" &>/dev/null
-    ssh-add "$SSH_KEY"
-    pbcopy < "${SSH_KEY}.pub"
-    success "SSH key generated and public key copied to clipboard"
-    info "Add it to GitHub → https://github.com/settings/ssh/new"
-  fi
-else
-  warning "Skipping SSH key generation (--skip-ssh)"
+# Streamed: casks may ask for sudo, and the 1Password pause waits for you.
+ui_stream "Homebrew packages" brew bundle --file "${HOME}/dotfiles/Brewfile"
+ui_stream "1Password (for private config)" bash "${HOME}/dotfiles/scripts/wait-for-1password.sh" || true
+ui_run "Linking config files (stow)" bash "${HOME}/dotfiles/scripts/link.sh"
+ui_run "Rust toolchain" install_rust
+ui_run "Python (uv)" uv python install
+ui_run "mise tools (Node.js etc.)" "${BREW_PREFIX}/bin/mise" install
+ui_run "Claude Code (CLI, plugins, language servers)" bash "${HOME}/dotfiles/scripts/claude-bootstrap.sh"
+ui_run "Database tools (harlequin)" uv tool install harlequin
+ui_run "macOS settings" "${HOME}/dotfiles/macos.sh"
+if ! $SKIP_SSH; then
+  ui_run "SSH key" make_ssh_key
 fi
 
-echo -e "\n${GREEN}${BOLD}✓ Setup complete!${RESET}\n"
+ui_summary
+rc=$?
+if ! $SKIP_SSH && [ -f "${HOME}/.ssh/id_ed25519.pub" ]; then
+  info "A newly created public key is on the clipboard. Add it to GitHub → https://github.com/settings/ssh/new"
+fi
+exit $rc

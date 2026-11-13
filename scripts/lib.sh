@@ -16,3 +16,6 @@ success() { echo -e "${GREEN}  ✓${RESET} $1"; }
 warning() { echo -e "${YELLOW}  !${RESET} $1"; }
 header()  { echo -e "\n${BOLD}$1${RESET}"; }
 dim()     { echo -e "${DIM}  $1${RESET}"; }
+
+# Terminal effects (banner, numbered steps, spinner, summary).
+source "$(dirname "${BASH_SOURCE[0]}")/ui.sh"
