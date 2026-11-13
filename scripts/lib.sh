@@ -2,6 +2,7 @@
 # Shared helpers for scripts/*.sh (source this file).
 
 DOTFILES="${DOTFILES:-${HOME}/dotfiles}"
+# shellcheck disable=SC2034  # used by sync.sh
 BREWFILE="${DOTFILES}/Brewfile"
 
 BOLD="\033[1m"

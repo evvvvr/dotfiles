@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034  # color variables are used by the scripts that source this
 # Terminal effects for the dotfiles scripts: banner, numbered steps, spinner,
 # progress bar and a summary table. Source this file.
 #

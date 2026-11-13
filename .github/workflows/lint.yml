@@ -1,0 +1,38 @@
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zsh
+        run: sudo apt-get update && sudo apt-get install -y zsh
+
+      - name: shellcheck (bash scripts)
+        run: git ls-files '*.sh' | xargs shellcheck -x --severity=warning
+
+      - name: Syntax check (bash)
+        run: git ls-files '*.sh' | xargs -n1 bash -n
+
+      - name: Syntax check (zsh)
+        run: |
+          for f in zsh/.zshrc zsh/.zshenv zsh/.zprofile; do
+            zsh -n "$f"
+          done
+
+      - name: Validate JSON
+        run: jq empty scripts/claude-plugins.json
+
+      - name: actionlint (workflows)
+        run: |
+          bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.7/scripts/download-actionlint.bash) 1.7.7
+          ./actionlint
