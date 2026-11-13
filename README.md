@@ -12,7 +12,7 @@ macOS setup scripts and configuration files.
 | `macos.sh` | macOS system preferences (called by `scripts/sync.sh`) |
 | `claude/` | Claude Code global `CLAUDE.md` (stow package) |
 | `mise/` | Global mise config: runtimes, npm CLIs and the `dotfiles:*` tasks (stow package) |
-| `scripts/` | `sync.sh`, `update.sh`, `upgrade.sh`, `lib.sh` (behind the mise tasks), `link.sh` (stow), `auto-upgrade.sh` (daily unattended upgrades), `claude-bootstrap.sh` + `claude-plugins.json` (Claude CLI, plugins, language servers) |
+| `scripts/` | `sync.sh`, `update.sh`, `upgrade.sh`, `lib.sh` (behind the mise tasks), `ui.sh` (terminal effects; `ui-demo.sh` previews them), `link.sh` (stow), `auto-upgrade.sh` (daily unattended upgrades), `claude-bootstrap.sh` + `claude-plugins.json` (Claude CLI, plugins, language servers) |
 | `launchd/` | LaunchAgents: nightly `auto-upgrade.sh` and the GUI `PATH` (stow package) |
 | `ghostty/` | Ghostty terminal config |
 | `sublime-text/` | Sublime Text preferences and package list |
@@ -96,6 +96,10 @@ mise run dotfiles:update
 ```
 
 > macOS settings cannot be captured automatically — edit `macos.sh` manually when preferences change.
+
+### Terminal output
+
+`setup`, `sync` and `upgrade` show a banner, numbered steps with a spinner, and a summary table (`scripts/ui.sh`, pure bash). Output is captured and shown only when a step fails, except steps that can prompt or are worth reading (brew, 1Password, sudo), which stream. Effects switch off automatically when output is not a terminal, `NO_COLOR` is set or `TERM=dumb`; force plain text with `UI_PLAIN=1`. Preview: `bash scripts/ui-demo.sh`.
 
 ## Claude Code
 
