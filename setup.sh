@@ -37,7 +37,7 @@ make_ssh_key() {
   ssh-add "$key" && pbcopy <"${key}.pub"
 }
 
-total=9
+total=8
 $SKIP_SSH || total=$((total + 1))
 ui_total "$total"
 
@@ -49,7 +49,6 @@ ui_run "Rust toolchain" install_rust
 ui_run "Python (uv)" uv python install
 ui_run "mise tools (Node.js etc.)" "${BREW_PREFIX}/bin/mise" install
 ui_run "Claude Code (CLI, plugins, language servers)" bash "${HOME}/dotfiles/scripts/claude-bootstrap.sh"
-ui_run "Database tools (harlequin)" uv tool install harlequin
 ui_run "macOS settings" "${HOME}/dotfiles/macos.sh"
 if ! $SKIP_SSH; then
   ui_run "SSH key" make_ssh_key
