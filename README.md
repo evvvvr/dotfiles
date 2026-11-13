@@ -63,6 +63,7 @@ Commands are global mise tasks (defined in `mise/.config/mise/config.toml`, so t
 | `dotfiles:link` | Re-stow configs, reload the launchd agent, restore private config |
 | `dotfiles:claude` | Claude CLI, plugins, skills, language servers |
 | `dotfiles:private` | Restore AWS config and Sublime license from 1Password |
+| `dotfiles:notify-test` | Send a test macOS notification (checks osascript notifications are allowed) |
 
 On a brand-new machine mise isn't installed yet, so start with the `bootstrap.sh` one-liner above.
 

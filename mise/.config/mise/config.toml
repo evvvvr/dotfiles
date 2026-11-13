@@ -48,3 +48,8 @@ raw = true
 description = "Restore private files (AWS config, Sublime license) from 1Password"
 run = 'bash "$HOME/dotfiles/scripts/restore-private-config.sh"'
 raw = true
+
+[tasks."dotfiles:notify-test"]
+description = "Send a test macOS notification (checks osascript notifications are allowed)"
+run = 'bash "$HOME/dotfiles/scripts/notify-test.sh"'
+raw = true
