@@ -12,3 +12,7 @@ adjust-cell-height = 1
 # cursor
 cursor-style = block
 cursor-style-blink = true
+
+# keybindings - free cmd+enter for Claude Code's send-now
+keybind = cmd+enter=unbind
+keybind = cmd+shift+enter=toggle_fullscreen
